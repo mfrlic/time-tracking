@@ -1,0 +1,23 @@
+.root {
+  height: 112px;
+  background-color: #181846;
+  border-radius: 0px 0px 22px 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 45px 20px;
+
+  .logo {
+    display: flex;
+    align-items: flex-end;
+    gap: 9px;
+
+    .title {
+      font-size: 24px;
+      line-height: 17px;
+      color: white;
+      margin-bottom: 8.5px;
+    }
+  }
+}
