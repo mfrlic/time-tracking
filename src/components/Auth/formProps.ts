@@ -5,7 +5,7 @@ const authValidationSchema = object().shape({
     .email("A valid email is required")
     .required("Email is required"),
   password: string()
-    .min(6, "Password must be at least 6 characters")
+    .min(6, "Password must be at least 6 characters long")
     .required("Password is required"),
 });
 

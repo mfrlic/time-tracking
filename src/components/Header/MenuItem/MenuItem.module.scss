@@ -1,9 +1,12 @@
+@import "@/styles/breakpoints";
+
 .root {
+  height: var(--header-height-lg);
+  width: var(--menu-item-width-lg);
+
   font-size: 16px;
   line-height: 19px;
   cursor: pointer;
-  width: 180px;
-  height: 112px;
   gap: 8px;
 
   display: flex;
@@ -16,6 +19,10 @@
     font-size: 15px;
     font-style: normal;
     line-height: 17px;
+
+    @media (width <= $breakpoint-md) {
+      display: none;
+    }
 
     &__active {
       @extend .title;
@@ -65,5 +72,15 @@
     &__end {
       border-radius: 0px 8px 8px 0px;
     }
+  }
+
+  @media (width <= $breakpoint-lg) {
+    height: var(--header-height-md);
+    width: var(--menu-item-width-md);
+  }
+
+  @media (width <= $breakpoint-md) {
+    height: var(--header-height-sm);
+    width: var(--menu-item-width-sm);
   }
 }

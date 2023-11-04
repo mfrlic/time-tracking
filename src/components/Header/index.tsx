@@ -24,7 +24,7 @@ export default function Header() {
   return (
     <header className={styles.root}>
       <div className={styles.logo}>
-        <Image src={LOGO_URL} alt="devōt logo" height={44} width={162} />
+        <Image src={LOGO_URL} alt="devōt logo" height={44} width={162} priority />
         <h1 className={styles.title}>Tracking tool</h1>
       </div>
       <Menu>

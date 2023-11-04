@@ -1,0 +1,25 @@
+@import "@/styles/breakpoints";
+
+.root {
+  margin-bottom: 64px;
+
+  display: flex;
+  align-items: center;
+
+  @media (width <= $breakpoint-md) {
+    margin-bottom: 32px;
+  }
+
+  .icon {
+    font-size: 24px;
+    margin-right: 8px;
+  }
+
+  .title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 17px;
+    letter-spacing: 0px;
+    text-align: left;
+  }
+}

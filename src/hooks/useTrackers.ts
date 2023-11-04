@@ -1,23 +1,26 @@
 import type { Tracker } from "@/app/api/types";
 import { firestore } from "@/lib/firebase";
+import { FIREBASE_TRACKERS_COLLECTION } from "@/utils/constants";
 import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import useSession from "./useSession";
 
 export default function useTrackers(type: "history" | "active") {
   const [trackers, setTrackers] = useState<Tracker[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const { session } = useSession();
+
   useEffect(() => {
-    //   const uid = auth.currentUser;
-    // console.log(auth.currentUser);
-    // if (!uid) return;
+    if (!session?.uid) {
+      return;
+    }
 
     const q = query(
-      collection(firestore, "timers"),
-      //   where("uid", "==", uid),
+      collection(firestore, FIREBASE_TRACKERS_COLLECTION),
+      where("uid", "==", session.uid),
       where("stoppedAt", type === "history" ? "!=" : "==", null)
-      //   orderBy("createdAt", "desc")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -27,7 +30,7 @@ export default function useTrackers(type: "history" | "active") {
       snapshot.forEach(
         (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => {
           const tracker: Tracker = {
-            id: doc.id,
+            idTracker: doc.id,
             uid: doc.data().uid,
             description: doc.data().description,
             timeLogged: doc.data().timeLogged,
@@ -44,7 +47,7 @@ export default function useTrackers(type: "history" | "active") {
     });
 
     return () => unsubscribe();
-  }, [type]);
+  }, [type, session?.uid]);
 
   return { trackers, loading };
 }

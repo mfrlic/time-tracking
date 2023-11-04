@@ -19,7 +19,7 @@ export default function Actions({
   ...data
 }: TrackerActionsProps) {
   const isPlaying = useMemo(() => {
-    return activeTracker?.id === data.id;
+    return activeTracker?.idTracker === data.idTracker;
   }, [activeTracker, data]);
 
   const showControls = useMemo(() => {

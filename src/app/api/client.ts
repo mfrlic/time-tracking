@@ -1,5 +1,5 @@
 import { auth, firestore } from "@/lib/firebase";
-import { apiRoutes } from "@/utils/constants";
+import { FIREBASE_TRACKERS_COLLECTION, apiRoutes } from "@/utils/constants";
 import type { LoginProps, Session } from "@/app/api/types";
 import { signOut } from "firebase/auth";
 import {
@@ -11,13 +11,17 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-function login({ idToken }: LoginProps): Promise<true> {
-  return fetch(apiRoutes.login, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${idToken}`,
-    },
-  }).then((res) => res.json());
+function login({ idToken }: LoginProps): Promise<boolean> {
+  try {
+    return fetch(apiRoutes.login, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    }).then((res) => res.json());
+  } catch {
+    return Promise.resolve(false);
+  }
 }
 
 function getSession(
@@ -38,7 +42,7 @@ async function logout(): Promise<true> {
 }
 
 async function createTracker({ description }: { description: string }) {
-  addDoc(collection(firestore, "timers"), {
+  addDoc(collection(firestore, FIREBASE_TRACKERS_COLLECTION), {
     createdAt: new Timestamp(new Date().getTime() / 1000, 0),
     description,
     uid: auth.currentUser?.uid,
@@ -58,7 +62,7 @@ async function updateTracker({
   stoppedAt?: string;
   timeLogged?: number;
 }) {
-  const ref = doc(firestore, "timers", idTracker);
+  const ref = doc(firestore, FIREBASE_TRACKERS_COLLECTION, idTracker);
 
   const toUpdate: {
     description?: string;
@@ -87,7 +91,7 @@ async function updateTracker({
 }
 
 async function deleteTracker(idTracker: string) {
-  const ref = doc(firestore, "timers", idTracker);
+  const ref = doc(firestore, FIREBASE_TRACKERS_COLLECTION, idTracker);
 
   await deleteDoc(ref);
 }

@@ -15,7 +15,7 @@ export default function EditTracker({
   const toast = useRef<Toast>(null);
 
   const handleSubmit = async ({ description }: TrackerFormValues) => {
-    const idTracker = (editingTracker as Tracker)?.id;
+    const idTracker = (editingTracker as Tracker)?.idTracker;
     if (idTracker) {
       await updateTracker({ idTracker, description });
     } else {
@@ -39,7 +39,9 @@ export default function EditTracker({
       <Toast ref={toast} />
       <Dialog
         header={
-          (editingTracker as Tracker)?.id ? "Edit tracker" : "New tracker"
+          (editingTracker as Tracker)?.idTracker
+            ? "Edit tracker"
+            : "New tracker"
         }
         visible={!!editingTracker}
         style={{ width: "50vw" }}
@@ -50,6 +52,8 @@ export default function EditTracker({
             description: editingTracker?.description ?? "",
           }}
           onSubmit={handleSubmit}
+          validateOnChange={false}
+          validateOnBlur={false}
         >
           {({ isSubmitting }) => (
             <Form>

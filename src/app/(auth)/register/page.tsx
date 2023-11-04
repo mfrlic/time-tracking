@@ -1,4 +1,4 @@
-import styles from "@/components/Auth/Auth.module.scss";
+import styles from "../Auth.module.scss";
 import { routes } from "@/utils/constants";
 import AuthFooter from "@/components/Auth/AuthFooter";
 import RegisterForm from "./RegisterForm";

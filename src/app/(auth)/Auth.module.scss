@@ -1,6 +1,12 @@
-@import "@/styles/breakpoints.scss";
+@import "@/styles/breakpoints";
 
 .root {
+  height: calc(100dvh - 112px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
   margin-top: var(--header-height-lg);
 
   @media (width <= $breakpoint-lg) {
@@ -11,13 +17,5 @@
     margin-top: var(--header-height-sm);
   }
 
-  padding-top: 84px;
-  padding-inline: 32px;
-  max-width: 1170px;
-  margin: 0 auto;
-
-  @media (width <= $breakpoint-md) {
-    padding-top: 32px;
-    padding-inline: 16px;
-  }
+  gap: 30px;
 }

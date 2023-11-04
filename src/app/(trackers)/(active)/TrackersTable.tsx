@@ -38,7 +38,7 @@ export default function TrackersTable() {
       acceptClassName: "p-button-danger",
       style: { marginLeft: -270 },
       accept: () =>
-        deleteTracker(tracker.id).then(() =>
+        deleteTracker(tracker.idTracker).then(() =>
           toast.current?.show({
             severity: "info",
             summary: "Confirmed",
@@ -74,7 +74,7 @@ export default function TrackersTable() {
 
   const handleStop = async (tracker: Tracker) => {
     await updateTracker({
-      idTracker: tracker?.id,
+      idTracker: tracker?.idTracker,
       stoppedAt: dayjs().toISOString(),
     });
 
@@ -91,7 +91,7 @@ export default function TrackersTable() {
     await Promise.all(
       activeTrackers.map((tracker) =>
         updateTracker({
-          idTracker: tracker.id,
+          idTracker: tracker.idTracker,
           stoppedAt: dayjs().toISOString(),
         })
       )
@@ -105,7 +105,7 @@ export default function TrackersTable() {
       const timeLogged = (activeTracker?.timeLogged ?? 0) + interval;
 
       updateTracker({
-        idTracker: activeTracker.id,
+        idTracker: activeTracker.idTracker,
         timeLogged,
       }).then(() => {
         setActiveTracker((prev) =>

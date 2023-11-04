@@ -1,3 +1,6 @@
+import clsx from "clsx";
+import styles from "./PageTitle.module.scss";
+
 export default function PageTitle({
   title,
   icon,
@@ -6,33 +9,9 @@ export default function PageTitle({
   icon?: string;
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        marginBottom: 32,
-      }}
-    >
-      {icon ? (
-        <i
-          className={`pi pi-${icon}`}
-          style={{
-            fontSize: "24px",
-            marginRight: 8,
-          }}
-        />
-      ) : null}
-      <span
-        style={{
-          fontSize: "24px",
-          fontWeight: "700",
-          lineHeight: "17px",
-          letterSpacing: "0px",
-          textAlign: "left",
-        }}
-      >
-        {title}
-      </span>
+    <div className={styles.root}>
+      {icon ? <i className={clsx("pi", `pi-${icon}`, styles.icon)} /> : null}
+      <span className={styles.title}>{title}</span>
     </div>
   );
 }

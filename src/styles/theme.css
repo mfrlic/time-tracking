@@ -1,18 +1,30 @@
 :root {
+  /* header */
+  --header-height-lg: 112px;
+  --header-height-md: 80px;
+  --header-height-sm: 64px;
+
+  --menu-item-width-lg: 180px;
+  --menu-item-width-md: 120px;
+  --menu-item-width-sm: 45px;
+
+  /* custom colors */
+  --white-lilac: #f9f9fd;
+  --ghost: #c4c5d7;
+  --whisper: #ecedf5;
+  --error-color: #f44336;
+
+  /* theme */
   --surface-a: #ffffff;
   --surface-b: #efefef;
   --surface-c: #e9ecef;
   --surface-d: #dee2e6;
   --surface-e: #ffffff;
   --surface-f: #ffffff;
-  --white-lilac: #f9f9fd;
-  --ghost: #c4c5d7;
-  --whisper: #ecedf5;
   --text-color: #212529;
   --text-color-secondary: #5f6b8a;
   --primary-color: #ff5722;
   --primary-color-text: #ffffff;
-
   --surface-0: #ffffff;
   --surface-50: #f9fafb;
   --surface-100: #f8f9fa;

@@ -1,5 +1,12 @@
+@import "@/styles/breakpoints";
+
 .root {
-  padding-block: 32px;
+  margin-bottom: 32px;
+
+  @media (width <= $breakpoint-md) {
+    margin-bottom: 16px;
+  }
+
   display: flex;
   align-items: center;
   justify-content: flex-end;

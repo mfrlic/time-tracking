@@ -1,3 +1,5 @@
+import type { FormikErrors } from "formik";
+
 type AuthFormValues = {
   email: string;
   password: string;
@@ -5,6 +7,7 @@ type AuthFormValues = {
 
 type AuthFormProps = {
   isSubmitting: boolean;
+  errors: FormikErrors<AuthFormValues>;
   title: string;
   buttonText: string;
 };

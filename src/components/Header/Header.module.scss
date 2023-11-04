@@ -1,5 +1,21 @@
+@import "@/styles/breakpoints";
+
 .root {
-  height: 112px;
+  height: var(--header-height-lg);
+
+  @media (width <= $breakpoint-lg) {
+    height: var(--header-height-md);
+  }
+
+  @media (width <= $breakpoint-md) {
+    height: var(--header-height-sm);
+  }
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
   background-color: #181846;
   border-radius: 0px 0px 22px 22px;
 
@@ -18,6 +34,10 @@
       line-height: 17px;
       color: white;
       margin-bottom: 8.5px;
+
+      @media (width <= $breakpoint-md) {
+        display: none;
+      }
     }
   }
 }
