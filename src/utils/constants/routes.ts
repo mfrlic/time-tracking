@@ -5,4 +5,10 @@ const routes = {
   register: "/register",
 };
 
-export default routes;
+const apiRoutes = {
+  login: "/api/auth/login",
+  session: "/api/auth/session",
+  logout: "/api/auth/logout",
+};
+
+export { routes, apiRoutes };

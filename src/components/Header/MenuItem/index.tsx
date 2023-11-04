@@ -4,14 +4,7 @@ import clsx from "clsx";
 import styles from "./MenuItem.module.scss";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-import { PropsWithChildren } from "react";
 import Link from "next/link";
-
-type BarProps = {
-  show: boolean;
-  isStart?: boolean;
-  isEnd?: boolean;
-};
 
 type MenuItemProps = {
   href: string;

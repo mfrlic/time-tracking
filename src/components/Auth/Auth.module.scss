@@ -1,0 +1,9 @@
+.root {
+  height: calc(100dvh - 112px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  gap: 30px;
+}

@@ -20,24 +20,24 @@
     &__active {
       @extend .title;
 
-      color: #f9f9fd;
+      color: var(--white-lilac);
       font-weight: 700;
     }
 
     &__inactive {
       @extend .title;
 
-      color: #c4c5d7;
+      color: var(--ghost);
       font-weight: 600;
     }
   }
 
   .icon {
     &__active {
-      color: #f9f9fd;
+      color: var(--white-lilac);
     }
     &__inactive {
-      color: #c4c5d7;
+      color: var(--ghost);
     }
   }
 
@@ -51,11 +51,11 @@
     flex-shrink: 0;
 
     &__active {
-      background-color: #ff5722;
+      background-color: var(--primary-color);
     }
 
     &__inactive {
-      background-color: #c4c5d7;
+      background-color: var(--ghost);
     }
 
     &__start {

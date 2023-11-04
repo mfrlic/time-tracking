@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  justify-content: flex-start;
+  gap: 16px;
+  align-items: center;
+  width: 150px;
+
+  .icon {
+    cursor: pointer;
+  }
+}

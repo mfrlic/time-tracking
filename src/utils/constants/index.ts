@@ -1,4 +1,4 @@
-import routes from "./routes";
+import { routes, apiRoutes } from "./routes";
 import { LOGO_URL } from "./assets";
 
-export { routes, LOGO_URL };
+export { routes, apiRoutes, LOGO_URL };

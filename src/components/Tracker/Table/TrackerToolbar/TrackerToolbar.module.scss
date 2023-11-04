@@ -1,0 +1,11 @@
+.root {
+  padding-block: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  .icon {
+    margin-right: 4px;
+  }
+}

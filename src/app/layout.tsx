@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
-import { Header } from "@/components";
+import Header from "@/components/Header";
 import { PrimeReactProvider } from "primereact/api";
 
-import "./globals.css";
+import "@/styles/globals.css";
+import "@/styles/theme.css";
 
 import "primeicons/primeicons.css";
 import "primereact/resources/primereact.css";
-import "primereact/resources/themes/saga-blue/theme.css";
-import { auth } from "@/lib/firebase";
 
 const nunito = Nunito_Sans({ subsets: ["latin"] });
 
