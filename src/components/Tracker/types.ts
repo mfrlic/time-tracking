@@ -24,6 +24,7 @@ type TrackerFilters = {
 type TrackerToolbarProps = {
   onStopAll: () => void;
   onAdd: () => void;
+  trackersCount: number;
 };
 
 type TrackerActionsProps = {
@@ -32,7 +33,7 @@ type TrackerActionsProps = {
   onPlay?: (tracker: Tracker) => void;
   onStop?: (tracker: Tracker) => void;
   onEdit: (tracker: Tracker) => void;
-  onDelete: (event: MouseEvent<SVGSVGElement>, tracker: Tracker) => void;
+  onDelete: (event: MouseEvent<HTMLButtonElement>, tracker: Tracker) => void;
 } & Tracker;
 
 export type {

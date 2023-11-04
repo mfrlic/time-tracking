@@ -6,7 +6,8 @@ import { Column } from "primereact/column";
 import dayjs from "dayjs";
 import { formatDateTime, formatTimeLogged } from "@/utils/formatters";
 import TrackerActions from "@/components/Tracker/Table/TrackerActions";
-import { useCallback, useEffect, useState } from "react";
+import type { MouseEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import EditTracker from "@/components/Tracker/EditTracker";
@@ -14,11 +15,15 @@ import useTrackers from "@/hooks/useTrackers";
 import TrackerFilters from "@/components/Tracker/Table/TrackerFilters";
 import type { TrackerFilters as TrackerFiltersType } from "@/components/Tracker/types";
 import { normalizedSearch } from "@/utils";
+import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
+import { deleteTracker } from "@/app/api/client";
+import { Toast } from "primereact/toast";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 export default function HistoryTable() {
+  const toast = useRef<Toast>(null);
   const { trackers: allTrackers } = useTrackers("history");
 
   const [filters, setFilters] = useState<TrackerFiltersType>({
@@ -68,9 +73,25 @@ export default function HistoryTable() {
     setEditingTracker(tracker);
   };
 
-  const handleDelete = async () => {
-    // await deleteTracker({ idTracker: tracker.idTracker });
-    // await getActiveTrackers().then(setAllTrackers);
+  const handleDelete = (
+    event: MouseEvent<HTMLButtonElement>,
+    tracker: Tracker
+  ) => {
+    confirmPopup({
+      target: event.currentTarget,
+      message: "Do you want to delete this record?",
+      icon: "pi pi-info-circle",
+      acceptClassName: "p-button-danger",
+      accept: () =>
+        deleteTracker(tracker.idTracker).then(() =>
+          toast.current?.show({
+            severity: "info",
+            summary: "Confirmed",
+            detail: "You have accepted",
+            life: 3000,
+          })
+        ),
+    });
   };
 
   const handleFiltersChange = useCallback(
@@ -84,6 +105,8 @@ export default function HistoryTable() {
 
   return (
     <>
+      <Toast ref={toast} />
+      <ConfirmPopup />
       <EditTracker
         editingTracker={editingTracker}
         onDialogHide={handleDialogHide}

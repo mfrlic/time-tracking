@@ -44,7 +44,6 @@ export default function EditTracker({
             : "New tracker"
         }
         visible={!!editingTracker}
-        style={{ width: "50vw" }}
         onHide={onDialogHide}
       >
         <Formik

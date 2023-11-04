@@ -12,6 +12,7 @@ const iconProps = {
 export default function TrackerToolbar({
   onStopAll,
   onAdd,
+  trackersCount,
 }: TrackerToolbarProps) {
   return (
     <div className={styles.root}>
@@ -22,6 +23,7 @@ export default function TrackerToolbar({
       />
       <Button
         label="Stop all"
+        disabled={trackersCount === 0}
         severity="secondary"
         onClick={onStopAll}
         icon={<StopIcon {...iconProps} />}

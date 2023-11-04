@@ -36,7 +36,6 @@ export default function TrackersTable() {
       message: "Do you want to delete this record?",
       icon: "pi pi-info-circle",
       acceptClassName: "p-button-danger",
-      style: { marginLeft: -270 },
       accept: () =>
         deleteTracker(tracker.idTracker).then(() =>
           toast.current?.show({
@@ -136,7 +135,11 @@ export default function TrackersTable() {
         onDialogHide={handleDialogHide}
       />
 
-      <TrackerToolbar onAdd={handleAdd} onStopAll={handleStopAll} />
+      <TrackerToolbar
+        onAdd={handleAdd}
+        onStopAll={handleStopAll}
+        trackersCount={activeTrackers.length}
+      />
 
       <DataTable value={activeTrackers} paginator rows={5}>
         <Column

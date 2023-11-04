@@ -8,6 +8,7 @@ import {
 } from "@/assets/icons";
 import styles from "./TrackerActions.module.scss";
 import type { TrackerActionsProps } from "../../types";
+import { Button } from "primereact/button";
 
 export default function Actions({
   activeTracker,
@@ -31,38 +32,55 @@ export default function Actions({
       {showControls ? (
         <>
           {!isPlaying ? (
-            <PlayIcon
-              className={styles.icon}
+            <Button
+              icon={<PlayIcon className={styles.icon} />}
               onClick={() => {
                 onPlay?.(data);
               }}
+              rounded
+              text
+              aria-label="Play"
             />
           ) : (
-            <PauseIcon
-              className={styles.icon}
+            <Button
+              icon={<PauseIcon className={styles.icon} />}
               onClick={() => {
                 onPause?.(data);
               }}
+              rounded
+              text
+              aria-label="Pause"
             />
           )}
-          <StopIcon
-            className={styles.icon}
+
+          <Button
+            icon={<StopIcon className={styles.icon} />}
             onClick={() => {
               onStop?.(data);
             }}
+            rounded
+            text
+            aria-label="Stop"
           />
         </>
       ) : null}
 
-      <EditIcon
-        className={styles.icon}
+      <Button
+        icon={<EditIcon className={styles.icon} />}
         onClick={() => {
           onEdit(data);
         }}
+        rounded
+        text
+        aria-label="Edit"
       />
-      <TrashIcon
-        className={styles.icon}
+
+      <Button
+        icon={<TrashIcon className={styles.icon} />}
         onClick={(event) => onDelete(event, data)}
+        rounded
+        text
+        aria-label="Delete"
       />
     </div>
   );
