@@ -11,7 +11,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import EditTracker from "@/components/Tracker/EditTracker";
-import useTrackers from "@/hooks/useTrackers";
+import { useTrackers } from "@/hooks";
 import TrackerFilters from "@/components/Tracker/Table/TrackerFilters";
 import type { TrackerFilters as TrackerFiltersType } from "@/components/Tracker/types";
 import { normalizedSearch } from "@/utils";

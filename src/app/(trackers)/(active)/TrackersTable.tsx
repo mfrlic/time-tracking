@@ -7,14 +7,13 @@ import type { MouseEvent } from "react";
 import { useCallback, useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
-import { deleteTracker, updateTracker } from "../../api/client";
+import { deleteTracker, updateTracker } from "@/app/api/client";
 import { formatTimeLogged } from "@/utils/formatters";
 import Actions from "../../../components/Tracker/Table/TrackerActions";
 import EditTracker from "@/components/Tracker/EditTracker";
 import TrackerToolbar from "@/components/Tracker/Table/TrackerToolbar";
 import dayjs from "dayjs";
-import useTrackers from "@/hooks/useTrackers";
-import useTimerSync from "@/hooks/useTimerSync";
+import { useTrackers, useTimerSync } from "@/hooks";
 
 export default function TrackersTable() {
   const toast = useRef<Toast>(null);
