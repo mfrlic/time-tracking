@@ -20,4 +20,5 @@ To set up and run the app on your local environment, follow these steps:
 1. Clone the repository to your local environment.
 2. Install the required dependencies by running `npm install`.
 3. Configure your Firebase credentials and connection details in the `.env.local` file, following the `.env.example` file located in the root of the project. **Note: Be cautious with your credentials and do not share sensitive information.**
-4. Start the development server with `npm run dev`.
+4. Edit the `firebaseConfig` object located in `/src/lib/firebase.ts` with your own configuration data
+5. Start the development server with `npm run dev`.
