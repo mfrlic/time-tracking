@@ -56,7 +56,12 @@ export default function EditTracker({
         >
           {({ isSubmitting }) => (
             <Form>
-              <Field as={InputText} name="description" type="text" />
+              <Field
+                as={InputText}
+                name="description"
+                type="text"
+                placeholder="Description"
+              />
 
               <Button type="submit" label="Save" disabled={isSubmitting} />
             </Form>

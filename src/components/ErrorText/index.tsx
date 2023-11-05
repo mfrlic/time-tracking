@@ -5,9 +5,5 @@ type ErrorTextProps = {
 };
 
 export default function ErrorText({ text }: ErrorTextProps) {
-  return (
-    <label data-testid="error-text" className={styles.root}>
-      {text}
-    </label>
-  );
+  return <label className={styles.root}>{text}</label>;
 }

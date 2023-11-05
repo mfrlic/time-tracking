@@ -64,7 +64,6 @@ export default function AuthForm({
             text
             type="button"
             aria-label="Password toggle"
-            data-testid="password-toggle"
             onClick={handleTogglePassword}
           />
         </span>

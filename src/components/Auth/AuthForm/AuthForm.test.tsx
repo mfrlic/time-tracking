@@ -22,22 +22,18 @@ describe("AuthForm", () => {
       </Formik>
     );
 
-    // Check if the title is rendered
     const titleElement = screen.getByText(title);
     expect(titleElement).toBeInTheDocument();
 
-    // Check if the email and password input fields are rendered
     const emailInput = screen.getByPlaceholderText("Email");
     expect(emailInput).toBeInTheDocument();
 
     const passwordInput = screen.getByPlaceholderText("Password");
     expect(passwordInput).toBeInTheDocument();
 
-    // Check if the show/hide password button is rendered
-    const showPasswordButton = screen.getByTestId("password-toggle"); // You should set a test ID in your component
+    const showPasswordButton = screen.getByLabelText("Password toggle");
     expect(showPasswordButton).toBeInTheDocument();
 
-    // Check if the submit button is rendered
     const submitButton = screen.getByText(buttonText);
     expect(submitButton).toBeInTheDocument();
   });
@@ -59,15 +55,12 @@ describe("AuthForm", () => {
       </Formik>
     );
 
-    // Check if the password input field is initially of type "password"
     const passwordInput = screen.getByPlaceholderText("Password");
     expect(passwordInput).toHaveAttribute("type", "password");
 
-    // Click the show/hide password button
-    const showPasswordButton = screen.getByTestId("password-toggle"); // You should set a test ID in your component
+    const showPasswordButton = screen.getByLabelText("Password toggle");
     fireEvent.click(showPasswordButton);
 
-    // Check if the password input field is now of type "text"
     expect(passwordInput).toHaveAttribute("type", "text");
   });
 

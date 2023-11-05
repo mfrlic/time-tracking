@@ -5,13 +5,13 @@ describe("ErrorText", () => {
   it("should render the provided text", () => {
     const text = "This is an error message";
     render(<ErrorText text={text} />);
-    const labelElement = screen.queryByTestId("error-text");
+    const labelElement = screen.getByText(text);
     expect(labelElement).toBeInTheDocument();
   });
 
   it("should render without text", () => {
-    render(<ErrorText />);
-    const labelElement = screen.queryByTestId("error-text");
+    const { container } = render(<ErrorText />);
+    const labelElement = container.querySelector("label");
     expect(labelElement).toBeInTheDocument();
   });
 });
