@@ -47,13 +47,25 @@ export default function AuthForm({
               "p-invalid": errors.password,
             })}
           />
-          <i
+
+          <Button
+            className={styles.passwordButton}
+            icon={
+              <i
+                className={clsx(
+                  "pi",
+                  showPassword ? "pi-eye-slash" : "pi-eye",
+                  styles.passwordIcon
+                )}
+              />
+            }
+            size="small"
+            rounded
+            text
+            type="button"
+            aria-label="Password toggle"
+            data-testid="password-toggle"
             onClick={handleTogglePassword}
-            className={clsx(
-              "pi",
-              showPassword ? "pi-eye-slash" : "pi-eye",
-              styles.passwordIconButton
-            )}
           />
         </span>
         <ErrorText text={errors.password} />

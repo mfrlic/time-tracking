@@ -29,14 +29,20 @@
     flex-direction: column;
 
     gap: 4px;
+
+    position: relative;
   }
 
   .passwordInput {
     width: 100%;
   }
 
-  .passwordIconButton {
-    cursor: pointer;
+  .passwordButton {
+    position: absolute;
+    right: 8px !important;
+  }
+
+  .passwordIcon {
     color: var(--text-color-secondary);
   }
 }

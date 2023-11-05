@@ -5,6 +5,7 @@ import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import useSession from "./useSession";
+import dayjs from "dayjs";
 
 export default function useTrackers(type: "history" | "active") {
   const [trackers, setTrackers] = useState<Tracker[]>([]);
@@ -42,7 +43,11 @@ export default function useTrackers(type: "history" | "active") {
         }
       );
 
-      setTrackers(updatedData);
+      setTrackers(
+        updatedData.sort((a, b) =>
+          dayjs(b.createdAt).isAfter(a.createdAt) ? 1 : -1
+        )
+      );
       setLoading(false);
     });
 

@@ -85,8 +85,6 @@ async function updateTracker({
     toUpdate["timeLogged"] = timeLogged;
   }
 
-  console.log(toUpdate);
-
   updateDoc(ref, toUpdate);
 }
 

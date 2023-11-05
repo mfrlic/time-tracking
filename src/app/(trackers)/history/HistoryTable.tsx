@@ -14,7 +14,7 @@ import EditTracker from "@/components/Tracker/EditTracker";
 import { useTrackers } from "@/hooks";
 import TrackerFilters from "@/components/Tracker/Table/TrackerFilters";
 import type { TrackerFilters as TrackerFiltersType } from "@/components/Tracker/types";
-import { normalizedSearch } from "@/utils";
+import { normalizedSearch } from "@/utils/functions";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { deleteTracker } from "@/app/api/client";
 import { Toast } from "primereact/toast";
@@ -40,8 +40,6 @@ export default function HistoryTable() {
         const searchTermMatch = filters.searchTerm
           ? normalizedSearch(filters.searchTerm, tracker.description)
           : true;
-
-        console.log(filters);
 
         const dateFromMatch = filters.dateFrom
           ? dayjs(tracker.createdAt).isSameOrAfter(dayjs(filters.dateFrom))
@@ -97,10 +95,8 @@ export default function HistoryTable() {
   const handleFiltersChange = useCallback(
     (filters: TrackerFiltersType) => {
       setFilters(filters);
-
-      filterResults(filters);
     },
-    [filterResults, setFilters]
+    [setFilters]
   );
 
   return (

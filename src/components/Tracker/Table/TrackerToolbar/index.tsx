@@ -1,5 +1,4 @@
-import { StopIcon } from "@/assets/icons";
-import StopwatchIcon from "@/assets/icons/StopwatchIcon";
+import { StopIcon, StopwatchIcon } from "@/assets/icons";
 import { Button } from "primereact/button";
 import styles from "./TrackerToolbar.module.scss";
 import type { TrackerToolbarProps } from "../../types";
