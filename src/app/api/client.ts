@@ -1,6 +1,6 @@
 import { auth, firestore } from "@/lib/firebase";
 import { FIREBASE_TRACKERS_COLLECTION, apiRoutes } from "@/utils/constants";
-import type { LoginProps, Session } from "@/app/api/types";
+import type { LoginProps, Session, UpdateTrackerProps } from "@/app/api/types";
 import { signOut } from "firebase/auth";
 import {
   Timestamp,
@@ -41,13 +41,20 @@ async function logout(): Promise<true> {
   }).then((res) => res.json());
 }
 
-async function createTracker({ description }: { description: string }) {
+async function createTracker({
+  description,
+  lastPlayedAt,
+}: {
+  description: string;
+  lastPlayedAt: string;
+}) {
   addDoc(collection(firestore, FIREBASE_TRACKERS_COLLECTION), {
     createdAt: new Timestamp(new Date().getTime() / 1000, 0),
     description,
     uid: auth.currentUser?.uid,
     timeLogged: 0,
     stoppedAt: null,
+    lastPlayedAt: new Timestamp(new Date(lastPlayedAt).getTime() / 1000, 0),
   });
 }
 
@@ -56,18 +63,17 @@ async function updateTracker({
   description,
   stoppedAt,
   timeLogged,
-}: {
-  description?: string;
-  idTracker: string;
-  stoppedAt?: string;
-  timeLogged?: number;
-}) {
+  lastPlayedAt,
+  shareCode,
+}: UpdateTrackerProps) {
   const ref = doc(firestore, FIREBASE_TRACKERS_COLLECTION, idTracker);
 
-  const toUpdate: {
-    description?: string;
+  const toUpdate: Omit<
+    UpdateTrackerProps,
+    "idTracker" | "stoppedAt" | "lastPlayedAt"
+  > & {
     stoppedAt?: Timestamp;
-    timeLogged?: number;
+    lastPlayedAt?: Timestamp | null;
   } = {};
 
   if (description) {
@@ -83,6 +89,16 @@ async function updateTracker({
 
   if (timeLogged) {
     toUpdate["timeLogged"] = timeLogged;
+  }
+
+  if (lastPlayedAt !== undefined) {
+    toUpdate["lastPlayedAt"] = lastPlayedAt
+      ? new Timestamp(new Date(lastPlayedAt).getTime() / 1000, 0)
+      : null;
+  }
+
+  if (shareCode) {
+    toUpdate["shareCode"] = shareCode;
   }
 
   updateDoc(ref, toUpdate);

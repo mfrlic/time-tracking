@@ -9,6 +9,7 @@ describe("Actions", () => {
     description: "Tracker Description",
     createdAt: dayjs().toISOString(),
     timeLogged: 0,
+    lastPlayedAt: dayjs().toISOString(),
   };
 
   it("should render the Actions component with Play", () => {
@@ -20,13 +21,12 @@ describe("Actions", () => {
 
     render(
       <Actions
-        activeTracker={{ ...mockData, idTracker: "2" }} // tracker is not active
+        tracker={{ ...mockData, lastPlayedAt: null }}
         onPause={onPause}
         onPlay={onPlay}
         onStop={onStop}
         onDelete={onDelete}
         onEdit={onEdit}
-        {...mockData}
       />
     );
 
@@ -48,13 +48,12 @@ describe("Actions", () => {
 
     render(
       <Actions
-        activeTracker={{ ...mockData }}
+        tracker={mockData}
         onPause={onPause}
         onPlay={onPlay}
         onStop={onStop}
         onDelete={onDelete}
         onEdit={onEdit}
-        {...mockData}
       />
     );
 
@@ -71,7 +70,7 @@ describe("Actions", () => {
     const onDelete = jest.fn();
     const onEdit = jest.fn();
 
-    render(<Actions onDelete={onDelete} onEdit={onEdit} {...mockData} />);
+    render(<Actions onDelete={onDelete} onEdit={onEdit} tracker={mockData} />);
 
     const playButton = screen.queryByLabelText("Play");
     const pauseButton = screen.queryByLabelText("Pause");
@@ -93,19 +92,18 @@ describe("Actions", () => {
 
     render(
       <Actions
-        activeTracker={{ ...mockData, idTracker: "2" }}
+        tracker={{ ...mockData, lastPlayedAt: null }}
         onPause={onPause}
         onPlay={onPlay}
         onStop={onStop}
         onDelete={onDelete}
         onEdit={onEdit}
-        {...mockData}
       />
     );
 
     fireEvent.click(screen.getByLabelText("Play"));
 
-    expect(onPlay).toHaveBeenCalledWith(mockData);
+    expect(onPlay).toHaveBeenCalledWith({ ...mockData, lastPlayedAt: null });
   });
 
   it("should call the onPause function when Pause button is clicked", () => {
@@ -117,13 +115,12 @@ describe("Actions", () => {
 
     render(
       <Actions
-        activeTracker={{ ...mockData }} // tracker is active
+        tracker={mockData} // tracker is active
         onPause={onPause}
         onPlay={onPlay}
         onStop={onStop}
         onDelete={onDelete}
         onEdit={onEdit}
-        {...mockData}
       />
     );
 
@@ -141,13 +138,12 @@ describe("Actions", () => {
 
     render(
       <Actions
-        activeTracker={{ ...mockData }}
+        tracker={mockData}
         onPause={onPause}
         onPlay={onPlay}
         onStop={onStop}
         onDelete={onDelete}
         onEdit={onEdit}
-        {...mockData}
       />
     );
 
@@ -165,13 +161,12 @@ describe("Actions", () => {
 
     render(
       <Actions
-        activeTracker={{ ...mockData }}
+        tracker={mockData}
         onPause={onPause}
         onPlay={onPlay}
         onStop={onStop}
         onDelete={onDelete}
         onEdit={onEdit}
-        {...mockData}
       />
     );
 
@@ -189,13 +184,12 @@ describe("Actions", () => {
 
     render(
       <Actions
-        activeTracker={{ ...mockData }}
+        tracker={mockData}
         onPause={onPause}
         onPlay={onPlay}
         onStop={onStop}
         onDelete={onDelete}
         onEdit={onEdit}
-        {...mockData}
       />
     );
 

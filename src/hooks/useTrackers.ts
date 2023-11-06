@@ -3,7 +3,7 @@ import { firestore } from "@/lib/firebase";
 import { FIREBASE_TRACKERS_COLLECTION } from "@/utils/constants";
 import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useSession from "./useSession";
 import dayjs from "dayjs";
 
@@ -12,6 +12,34 @@ export default function useTrackers(type: "history" | "active") {
   const [loading, setLoading] = useState<boolean>(true);
 
   const { session } = useSession();
+
+  const updateTimeLogged = (trackers: Tracker[]) => {
+    return trackers.map((tracker) => {
+      const dateNow = dayjs();
+
+      if (tracker.lastPlayedAt) {
+        const lastUpdateDate = dayjs(
+          tracker.lastRefreshedAt ?? tracker.lastPlayedAt
+        );
+
+        tracker.timeLogged += dateNow.diff(lastUpdateDate, "milliseconds");
+      }
+
+      tracker.lastRefreshedAt = dateNow.toISOString();
+
+      return tracker;
+    });
+  };
+
+  const setTimeLogged = useCallback(() => {
+    setTrackers((prevTrackers) => {
+      if (!prevTrackers) {
+        return prevTrackers;
+      }
+
+      return updateTimeLogged(prevTrackers);
+    });
+  }, []);
 
   useEffect(() => {
     if (!session?.uid) {
@@ -34,24 +62,32 @@ export default function useTrackers(type: "history" | "active") {
             uid: doc.data().uid,
             description: doc.data().description,
             timeLogged: doc.data().timeLogged,
-            createdAt: doc.data().createdAt.toDate(),
-            stoppedAt: doc.data().stoppedAt?.toDate(),
+            createdAt: doc.data().createdAt.toDate()?.toISOString(),
+            stoppedAt: doc.data().stoppedAt?.toDate()?.toISOString(),
+            lastPlayedAt: doc.data().lastPlayedAt?.toDate()?.toISOString(),
+            lastRefreshedAt: trackers?.find(
+              (tracker) => tracker.idTracker === doc.id
+            )?.lastRefreshedAt,
+            shareCode: doc.data().shareCode,
           };
 
           updatedData.push(tracker);
         }
       );
 
-      setTrackers(
-        updatedData.sort((a, b) =>
-          dayjs(b.createdAt).isAfter(a.createdAt) ? 1 : -1
-        )
+      const sortedData = updatedData.sort((a, b) =>
+        dayjs(b.createdAt).isAfter(a.createdAt) ? 1 : -1
       );
+
+      const updatedTrackers = updateTimeLogged(sortedData);
+
+      setTrackers(updatedTrackers);
+
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, [type, session?.uid]);
 
-  return { trackers: trackers ?? [], loading };
+  return { trackers: trackers ?? [], loading, setTimeLogged };
 }

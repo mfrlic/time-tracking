@@ -9,33 +9,66 @@ import {
 import styles from "./TrackerActions.module.scss";
 import type { TrackerActionsProps } from "../../types";
 import { Button } from "primereact/button";
+import { updateTracker } from "@/app/api/client";
+
+function generateSecretCode(length: number) {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let secretCode = "";
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    secretCode += characters.charAt(randomIndex);
+  }
+
+  return secretCode;
+}
 
 export default function Actions({
-  activeTracker,
+  tracker,
   onPause,
   onPlay,
   onStop,
   onDelete,
   onEdit,
-  ...data
+  toast,
 }: TrackerActionsProps) {
-  const isPlaying = useMemo(() => {
-    return activeTracker?.idTracker === data.idTracker;
-  }, [activeTracker, data]);
-
   const showControls = useMemo(() => {
-    return onPause && onPlay && onStop;
+    return !!(onPause && onPlay && onStop);
   }, [onPause, onPlay, onStop]);
+
+  const handleShare = () => {
+    let shareCode = tracker?.shareCode;
+
+    if (!shareCode) {
+      shareCode = generateSecretCode(64);
+
+      updateTracker({
+        idTracker: tracker.idTracker,
+        shareCode,
+      });
+    }
+
+    navigator.clipboard.writeText(
+      `${window.location.origin}/tracker/${shareCode}`
+    );
+
+    toast?.show({
+      severity: "info",
+      summary: "Share link copied to clipboard",
+      life: 2000,
+    });
+  };
 
   return (
     <div className={styles.root}>
       {showControls ? (
         <>
-          {!isPlaying ? (
+          {!tracker.lastPlayedAt ? (
             <Button
               icon={<PlayIcon className={styles.icon} />}
               onClick={() => {
-                onPlay?.(data);
+                onPlay?.(tracker);
               }}
               rounded
               text
@@ -45,7 +78,7 @@ export default function Actions({
             <Button
               icon={<PauseIcon className={styles.icon} />}
               onClick={() => {
-                onPause?.(data);
+                onPause?.(tracker);
               }}
               rounded
               text
@@ -56,7 +89,7 @@ export default function Actions({
           <Button
             icon={<StopIcon className={styles.icon} />}
             onClick={() => {
-              onStop?.(data);
+              onStop?.(tracker);
             }}
             rounded
             text
@@ -68,7 +101,7 @@ export default function Actions({
       <Button
         icon={<EditIcon className={styles.icon} />}
         onClick={() => {
-          onEdit(data);
+          onEdit(tracker);
         }}
         rounded
         text
@@ -77,10 +110,17 @@ export default function Actions({
 
       <Button
         icon={<TrashIcon className={styles.icon} />}
-        onClick={(event) => onDelete(event, data)}
+        onClick={(event) => onDelete(event, tracker)}
         rounded
         text
         aria-label="Delete"
+      />
+      <Button
+        icon={<i className="pi pi-share-alt" style={{ color: "#5F6B8A" }} />}
+        onClick={handleShare}
+        rounded
+        text
+        aria-label="Share"
       />
     </div>
   );

@@ -2,16 +2,35 @@
 
 import clsx from "clsx";
 import styles from "./MenuItem.module.scss";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import Link from "next/link";
+import { logout } from "@/app/api/client";
+import { routes } from "@/utils/constants";
+import { MenuItemContainerProps, MenuItemProps } from "../types";
 
-type MenuItemProps = {
-  href: string;
-  icon: string;
-  title: string;
-  isFirst?: boolean;
-  isLast?: boolean;
+const MenuItemContainer = ({
+  children,
+  href,
+  onClick,
+}: MenuItemContainerProps) => {
+  const sharedProps = {
+    className: styles.root,
+  };
+
+  if (href) {
+    return (
+      <Link {...sharedProps} href={href}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <span {...sharedProps} onClick={onClick}>
+      {children}
+    </span>
+  );
 };
 
 export default function MenuItem({
@@ -20,6 +39,7 @@ export default function MenuItem({
   title,
   isFirst,
   isLast,
+  isLogout,
 }: MenuItemProps) {
   const pathname = usePathname();
 
@@ -28,8 +48,16 @@ export default function MenuItem({
     return pathname === href;
   }, [href, pathname]);
 
+  const { push } = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+
+    push(routes.login);
+  };
+
   return (
-    <Link href={href} className={styles.root}>
+    <MenuItemContainer onClick={handleLogout} href={href}>
       <i
         className={clsx(
           "pi",
@@ -43,16 +71,18 @@ export default function MenuItem({
         {title}
       </span>
 
-      <span
-        className={clsx(
-          styles.bar,
-          {
-            [styles.bar__start]: isFirst,
-            [styles.bar__end]: isLast,
-          },
-          isActive ? styles.bar__active : styles.bar__inactive
-        )}
-      />
-    </Link>
+      {!isLogout ? (
+        <span
+          className={clsx(
+            styles.bar,
+            {
+              [styles.bar__start]: isFirst,
+              [styles.bar__end]: isLast,
+            },
+            isActive ? styles.bar__active : styles.bar__inactive
+          )}
+        />
+      ) : null}
+    </MenuItemContainer>
   );
 }

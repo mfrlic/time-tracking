@@ -1,5 +1,6 @@
 import useTrackers from "./useTrackers";
-import useTimerSync from "./useTimerSync";
+import useTracker from "./useTracker";
 import useSession from "./useSession";
+import useTimeSync from "./useTimeSync";
 
-export { useTrackers, useTimerSync, useSession };
+export { useTracker, useTrackers, useSession, useTimeSync };

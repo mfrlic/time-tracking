@@ -6,13 +6,10 @@
   display: flex;
   align-items: center;
 
+  gap: 8px;
+
   @media (width <= $breakpoint-md) {
     margin-bottom: 32px;
-  }
-
-  .icon {
-    font-size: 24px;
-    margin-right: 8px;
   }
 
   .title {

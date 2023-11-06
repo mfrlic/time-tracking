@@ -1,19 +1,27 @@
 import { renderHook } from "@testing-library/react";
-import { useTimerSync } from ".";
-import type { Tracker } from "@/app/api/types";
+import { useTimeSync } from ".";
 
-describe("useTimerSync", () => {
+const activeTracker = {
+  idTracker: "1",
+  description: "Test",
+  timeLogged: 0,
+  lastPlayedAt: new Date().toISOString(),
+  stoppedAt: null,
+  uid: "123",
+  createdAt: new Date().toISOString(),
+};
+
+describe("useTimeSync", () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
 
-  it("should set up and clear an interval when activeTracker is provided", () => {
+  it("should set up and clear an interval when an active tracker is provided", () => {
     const callback = jest.fn();
-    const activeTracker = {} as Tracker;
     const interval = 1000;
 
     const { unmount } = renderHook(() =>
-      useTimerSync({ activeTracker, interval, callback })
+      useTimeSync({ interval, onInterval: callback, trackers: [activeTracker] })
     );
 
     expect(callback).not.toHaveBeenCalled();
@@ -26,12 +34,13 @@ describe("useTimerSync", () => {
     expect(callback).toHaveBeenCalledTimes(1);
   });
 
-  it("should not set up an interval when activeTracker is null", () => {
+  it("should not set up an interval when there is no active tracker", () => {
     const callback = jest.fn();
-    const activeTracker = null;
     const interval = 1000;
 
-    renderHook(() => useTimerSync({ activeTracker, interval, callback }));
+    renderHook(() =>
+      useTimeSync({ interval, onInterval: callback, trackers: [] })
+    );
 
     jest.advanceTimersByTime(interval);
     expect(callback).not.toHaveBeenCalled();

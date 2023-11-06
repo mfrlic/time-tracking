@@ -8,10 +8,14 @@ import { Button } from "primereact/button";
 import { createTracker, updateTracker } from "@/app/api/client";
 import type { EditTrackerProps, TrackerFormValues } from "../types";
 import styles from "./EditTracker.module.scss";
+import { object, string } from "yup";
+import ErrorText from "@/components/ErrorText";
+import dayjs from "dayjs";
 
 export default function EditTracker({
   editingTracker,
   onDialogHide,
+  onPauseAll,
 }: EditTrackerProps) {
   const toast = useRef<Toast>(null);
 
@@ -20,20 +24,26 @@ export default function EditTracker({
     if (idTracker) {
       await updateTracker({ idTracker, description });
     } else {
+      await onPauseAll?.();
+
       await createTracker({
         description,
+        lastPlayedAt: dayjs().toISOString(),
       });
     }
 
     toast.current?.show({
       severity: "success",
-      summary: "Success",
-      detail: `Tracker ${idTracker ? "updated" : "created"}`,
-      life: 3000,
+      summary: `Tracker ${idTracker ? "updated" : "created"}`,
+      life: 2000,
     });
 
     onDialogHide();
   };
+
+  const validationSchema = object().shape({
+    description: string().required("This field is required"),
+  });
 
   return (
     <>
@@ -56,8 +66,9 @@ export default function EditTracker({
           onSubmit={handleSubmit}
           validateOnChange={false}
           validateOnBlur={false}
+          validationSchema={validationSchema}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, errors }) => (
             <Form className={styles.form}>
               <Field
                 as={InputText}
@@ -65,8 +76,14 @@ export default function EditTracker({
                 type="text"
                 placeholder="Description"
               />
+              <ErrorText text={errors.description} />
 
-              <Button type="submit" label="Save" disabled={isSubmitting} />
+              <Button
+                type="submit"
+                label="Save"
+                disabled={isSubmitting}
+                className={styles.submitButton}
+              />
             </Form>
           )}
         </Formik>

@@ -1,10 +1,10 @@
 @import "@/styles/breakpoints";
 
 .root {
-  width: 50%;
+  width: 35%;
 
   @media (width <= $breakpoint-lg) {
-    width: 60%;
+    width: 50%;
   }
 
   @media (width <= $breakpoint-md) {
@@ -14,6 +14,10 @@
   .form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 4px;
+
+    .submitButton {
+      margin-top: 8px;
+    }
   }
 }

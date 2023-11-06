@@ -6,7 +6,6 @@ import { Column } from "primereact/column";
 import dayjs from "dayjs";
 import { formatDateTime, formatTimeLogged } from "@/utils/formatters";
 import TrackerActions from "@/components/Tracker/Table/TrackerActions";
-import type { MouseEvent } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
@@ -18,19 +17,20 @@ import { normalizedSearch } from "@/utils/functions";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { deleteTracker } from "@/app/api/client";
 import { Toast } from "primereact/toast";
+import { useRouter } from "next/router";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-export default function HistoryTable() {
+export default function HistoryTable({
+  initialFilters,
+}: {
+  initialFilters: TrackerFiltersType;
+}) {
   const toast = useRef<Toast>(null);
   const { trackers: allTrackers, loading } = useTrackers("history");
 
-  const [filters, setFilters] = useState<TrackerFiltersType>({
-    dateFrom: null,
-    dateTo: null,
-    searchTerm: "",
-  });
+  const [filters, setFilters] = useState<TrackerFiltersType>(initialFilters);
 
   const [filteredTrackers, setFilteredTrackers] = useState<Tracker[]>();
 
@@ -46,7 +46,12 @@ export default function HistoryTable() {
           : true;
 
         const dateToMatch = filters.dateTo
-          ? dayjs(tracker.createdAt).isSameOrBefore(dayjs(filters.dateTo))
+          ? dayjs(tracker.createdAt).isSameOrBefore(
+              dayjs(filters.dateTo)
+                .set("hour", 23)
+                .set("minute", 59)
+                .set("second", 59)
+            )
           : true;
 
         return searchTermMatch && dateFromMatch && dateToMatch;
@@ -72,7 +77,7 @@ export default function HistoryTable() {
   };
 
   const handleDelete = (
-    event: MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLButtonElement>,
     tracker: Tracker
   ) => {
     confirmPopup({
@@ -83,21 +88,28 @@ export default function HistoryTable() {
       accept: () =>
         deleteTracker(tracker.idTracker).then(() =>
           toast.current?.show({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "You have accepted",
-            life: 3000,
+            severity: "success",
+            summary: "Tracker deleted",
+            life: 2000,
           })
         ),
     });
   };
 
-  const handleFiltersChange = useCallback(
-    (filters: TrackerFiltersType) => {
-      setFilters(filters);
-    },
-    [setFilters]
-  );
+  const handleFiltersChange = (filters: TrackerFiltersType) => {
+    const filtersSearchParams = new URLSearchParams({
+      ...(filters.dateFrom ? { dateFrom: filters.dateFrom } : {}),
+      ...(filters.dateTo ? { dateFrom: filters.dateTo } : {}),
+      searchTerm: filters.searchTerm ?? "",
+    });
+
+    const newUrl = `${
+      window.location.origin
+    }/history?${filtersSearchParams.toString()}`;
+    window.location.replace(newUrl);
+
+    setFilters(filters);
+  };
 
   return (
     <>
@@ -113,18 +125,25 @@ export default function HistoryTable() {
           header="Created at"
           body={(data: Tracker) => formatDateTime(data.createdAt)}
         />
-        <Column field="description" header="Description" />
+        <Column
+          field="description"
+          header="Description"
+          style={{
+            width: "40%",
+          }}
+        />
         <Column
           header="Time logged"
           body={(data: Tracker) => formatTimeLogged(data.timeLogged)}
         />
         <Column
           header="Actions"
-          body={(props: Tracker) => (
+          body={(tracker: Tracker) => (
             <TrackerActions
-              {...props}
+              tracker={tracker}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              toast={toast.current}
             />
           )}
         />

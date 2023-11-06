@@ -1,33 +1,40 @@
 "use client";
 
 import { DataTable } from "primereact/datatable";
-import type { Tracker, TrackerDTO } from "@/app/api/types";
+import type { Tracker, CreateTrackerProps } from "@/app/api/types";
 import { Column } from "primereact/column";
-import type { MouseEvent } from "react";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Toast } from "primereact/toast";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { deleteTracker, updateTracker } from "@/app/api/client";
 import { formatTimeLogged } from "@/utils/formatters";
-import Actions from "../../../components/Tracker/Table/TrackerActions";
+import TrackerActions from "../../../components/Tracker/Table/TrackerActions";
 import EditTracker from "@/components/Tracker/EditTracker";
 import TrackerToolbar from "@/components/Tracker/Table/TrackerToolbar";
 import dayjs from "dayjs";
-import { useTrackers, useTimerSync } from "@/hooks";
+import { useTimeSync, useTrackers } from "@/hooks";
 
 export default function TrackersTable() {
   const toast = useRef<Toast>(null);
 
-  const [activeTracker, setActiveTracker] = useState<Tracker | null>(null);
-
   const [editingTracker, setEditingTracker] = useState<
-    Tracker | TrackerDTO | null
+    Tracker | CreateTrackerProps | null
   >(null);
 
-  const { trackers: activeTrackers, loading } = useTrackers("active");
+  const {
+    trackers: activeTrackers,
+    loading,
+    setTimeLogged,
+  } = useTrackers("active");
+
+  useTimeSync({
+    interval: 1000,
+    onInterval: setTimeLogged,
+    trackers: activeTrackers,
+  });
 
   const handleDelete = (
-    event: MouseEvent<HTMLButtonElement>,
+    event: React.MouseEvent<HTMLButtonElement>,
     tracker: Tracker
   ) => {
     confirmPopup({
@@ -38,10 +45,9 @@ export default function TrackersTable() {
       accept: () =>
         deleteTracker(tracker.idTracker).then(() =>
           toast.current?.show({
-            severity: "info",
-            summary: "Confirmed",
-            detail: "You have accepted",
-            life: 3000,
+            severity: "success",
+            summary: "Tracker deleted",
+            life: 2000,
           })
         ),
     });
@@ -62,69 +68,47 @@ export default function TrackersTable() {
     setEditingTracker(null);
   };
 
-  const handlePlay = (tracker: Tracker) => {
-    setActiveTracker(tracker);
+  const handlePlay = async (tracker: Tracker) => {
+    handlePauseAll();
+
+    await updateTracker({
+      idTracker: tracker?.idTracker,
+      lastPlayedAt: dayjs().toISOString(),
+    });
   };
 
-  const handlePause = () => {
-    setActiveTracker(null);
+  const handlePause = async (tracker: Tracker) => {
+    if (!tracker.lastPlayedAt) return;
+
+    await updateTracker({
+      idTracker: tracker?.idTracker,
+      lastPlayedAt: null,
+      timeLogged: tracker.timeLogged,
+    });
+  };
+
+  const handlePauseAll = async () => {
+    await Promise.all(activeTrackers.map(handlePause));
   };
 
   const handleStop = async (tracker: Tracker) => {
+    const additionalData = tracker.lastPlayedAt
+      ? {
+          lastPlayedAt: null,
+          timeLogged: tracker.timeLogged,
+        }
+      : {};
+
     await updateTracker({
       idTracker: tracker?.idTracker,
       stoppedAt: dayjs().toISOString(),
+      ...additionalData,
     });
-
-    if (activeTracker) {
-      setActiveTracker(null);
-    }
   };
 
   const handleStopAll = async () => {
-    if (activeTracker) {
-      setActiveTracker(null);
-    }
-
-    await Promise.all(
-      activeTrackers.map((tracker) =>
-        updateTracker({
-          idTracker: tracker.idTracker,
-          stoppedAt: dayjs().toISOString(),
-        })
-      )
-    );
+    await Promise.all(activeTrackers.map(handleStop));
   };
-
-  const interval = 1000;
-
-  const callback = useCallback(() => {
-    if (activeTracker) {
-      const timeLogged = (activeTracker?.timeLogged ?? 0) + interval;
-
-      updateTracker({
-        idTracker: activeTracker.idTracker,
-        timeLogged,
-      }).then(() => {
-        setActiveTracker((prev) =>
-          prev
-            ? {
-                ...prev,
-                timeLogged,
-              }
-            : null
-        );
-      });
-    }
-  }, [activeTracker]);
-
-  useTimerSync({
-    activeTracker,
-    interval,
-    callback,
-  });
-
-  console.log(loading);
 
   return (
     <>
@@ -134,6 +118,7 @@ export default function TrackersTable() {
       <EditTracker
         editingTracker={editingTracker}
         onDialogHide={handleDialogHide}
+        onPauseAll={handlePauseAll}
       />
 
       <TrackerToolbar
@@ -147,20 +132,24 @@ export default function TrackersTable() {
           header="Time logged"
           body={(data) => formatTimeLogged(data.timeLogged)}
         />
-        <Column field="description" header="Description" />
+        <Column
+          field="description"
+          header="Description"
+          style={{
+            width: "50%",
+          }}
+        />
         <Column
           header="Actions"
-          headerStyle={{ width: "5rem", textAlign: "center" }}
-          bodyStyle={{ textAlign: "center", overflow: "visible" }}
-          body={(props) => (
-            <Actions
-              {...props}
-              activeTracker={activeTracker}
+          body={(tracker: Tracker) => (
+            <TrackerActions
+              tracker={tracker}
               onDelete={handleDelete}
               onEdit={handleEdit}
               onPlay={handlePlay}
               onPause={handlePause}
               onStop={handleStop}
+              toast={toast.current}
             />
           )}
         />

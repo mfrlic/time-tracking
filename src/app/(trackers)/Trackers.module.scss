@@ -1,6 +1,7 @@
 @import "@/styles/breakpoints.scss";
 
 .root {
+  margin: 0 auto;
   margin-top: var(--header-height-lg);
 
   @media (width <= $breakpoint-lg) {
@@ -14,7 +15,6 @@
   padding-top: 84px;
   padding-inline: 32px;
   max-width: 1170px;
-  margin: 0 auto;
 
   @media (width <= $breakpoint-md) {
     padding-top: 32px;

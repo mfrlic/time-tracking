@@ -1,16 +1,17 @@
-import type { Tracker, TrackerDTO } from "@/app/api/types";
-import type { MouseEvent, PropsWithChildren } from "react";
+import type { Tracker, CreateTrackerProps } from "@/app/api/types";
+import { Toast } from "primereact/toast";
 
 type EditTrackerProps = {
-  editingTracker: Tracker | TrackerDTO | null;
+  editingTracker: Tracker | CreateTrackerProps | null;
   onDialogHide: () => void;
+  onPauseAll?: () => Promise<void>;
 };
 
 type TrackerFormValues = {
   description: string;
 };
 
-type TrackerFilterContainerProps = PropsWithChildren<{
+type TrackerFilterContainerProps = React.PropsWithChildren<{
   htmlFor: string;
   label: string;
 }>;
@@ -28,13 +29,17 @@ type TrackerToolbarProps = {
 };
 
 type TrackerActionsProps = {
-  activeTracker?: Tracker;
   onPause?: (tracker: Tracker) => void;
   onPlay?: (tracker: Tracker) => void;
   onStop?: (tracker: Tracker) => void;
   onEdit: (tracker: Tracker) => void;
-  onDelete: (event: MouseEvent<HTMLButtonElement>, tracker: Tracker) => void;
-} & Tracker;
+  onDelete: (
+    event: React.MouseEvent<HTMLButtonElement>,
+    tracker: Tracker
+  ) => void;
+  tracker: Tracker;
+  toast?: Toast | null;
+};
 
 export type {
   TrackerFilterContainerProps,

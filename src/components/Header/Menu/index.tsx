@@ -2,12 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import styles from "./Menu.module.scss";
-
-import type { PropsWithChildren} from "react";
 import { useMemo } from "react";
 import { routes } from "@/utils/constants";
 
-export default function Menu({ children }: PropsWithChildren) {
+export default function Menu({ children }: React.PropsWithChildren) {
   const pathname = usePathname();
 
   const shouldRender = useMemo(() => {

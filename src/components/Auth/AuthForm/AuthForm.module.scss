@@ -15,13 +15,13 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 
   .title {
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
     line-height: 17px;
+    margin-block: 0px 40px;
   }
 
   .inputContainer {
@@ -31,6 +31,8 @@
     gap: 4px;
 
     position: relative;
+
+    margin-top: 10px;
   }
 
   .passwordInput {
@@ -43,6 +45,10 @@
   }
 
   .passwordIcon {
-    color: var(--text-color-secondary);
+    color: var(--lynch);
+  }
+
+  .submitButton {
+    margin-top: 40px;
   }
 }

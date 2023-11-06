@@ -69,7 +69,12 @@ export default function AuthForm({
         </span>
         <ErrorText text={errors.password} />
       </div>
-      <Button label={buttonText} type="submit" disabled={isSubmitting} />
+      <Button
+        label={buttonText}
+        type="submit"
+        disabled={isSubmitting}
+        className={styles.submitButton}
+      />
     </Form>
   );
 }

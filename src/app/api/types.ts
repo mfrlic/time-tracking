@@ -9,12 +9,30 @@ type Tracker = {
   uid: string;
   description: string;
   createdAt: string;
-  stoppedAt?: string;
+  stoppedAt?: string | null;
+  lastPlayedAt?: string | null;
+  lastRefreshedAt?: string; // only used in client
   timeLogged: number;
+  shareCode?: string;
 };
 
-type TrackerDTO = Pick<Tracker, "description" | "createdAt">;
+type UpdateTrackerProps = {
+  description?: string;
+  idTracker: string;
+  stoppedAt?: string;
+  timeLogged?: number;
+  lastPlayedAt?: string | null;
+  shareCode?: string;
+};
+
+type CreateTrackerProps = Pick<Tracker, "description" | "createdAt">;
 
 type Session = DecodedIdToken;
 
-export type { Tracker, TrackerDTO, Session, LoginProps };
+export type {
+  Tracker,
+  UpdateTrackerProps,
+  CreateTrackerProps,
+  Session,
+  LoginProps,
+};

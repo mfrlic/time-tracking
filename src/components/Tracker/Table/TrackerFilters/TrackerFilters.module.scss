@@ -28,7 +28,7 @@
     width: 100%;
 
     &__label {
-      color: var(--text-color-secondary);
+      color: var(--lynch);
       font-size: 14px;
       font-weight: 400;
       line-height: 17px;
@@ -41,6 +41,7 @@
 
       &__icon {
         cursor: pointer;
+        color: var(--lynch);
       }
     }
 

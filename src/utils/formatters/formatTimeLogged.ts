@@ -1,4 +1,6 @@
-export default function formatTimeLogged(milliseconds: number): string {
+export default function formatTimeLogged(milliseconds?: number): string {
+  if (!milliseconds) return "00:00:00";
+
   const hours = Math.floor(milliseconds / 3600000);
   milliseconds %= 3600000;
   const minutes = Math.floor(milliseconds / 60000);

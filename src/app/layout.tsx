@@ -3,11 +3,9 @@ import { Nunito_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import { PrimeReactProvider } from "primereact/api";
 
-import "@/styles/globals.css";
-import "@/styles/theme.css";
-
 import "primeicons/primeicons.css";
 import "primereact/resources/primereact.css";
+import "@/styles/theme.css";
 
 const nunito = Nunito_Sans({ subsets: ["latin"] });
 

@@ -2,7 +2,10 @@ import { auth } from "firebase-admin";
 import { initApp } from "@/lib/firebase-admin";
 import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { SESSION_COOKIE_NAME } from "@/utils/constants/cookies";
+import {
+  SESSION_COOKIE_NAME,
+  SESSION_EXPIRES_IN,
+} from "@/utils/constants/cookies";
 
 initApp();
 
@@ -13,14 +16,13 @@ export async function POST() {
     const decodedToken = await auth().verifyIdToken(idToken);
 
     if (decodedToken) {
-      const expiresIn = 60 * 60 * 24 * 5 * 1000;
       const sessionCookie = await auth().createSessionCookie(idToken, {
-        expiresIn,
+        expiresIn: SESSION_EXPIRES_IN,
       });
       const options = {
         name: SESSION_COOKIE_NAME,
         value: sessionCookie,
-        maxAge: expiresIn,
+        maxAge: SESSION_EXPIRES_IN,
         httpOnly: true,
         secure: true,
       };

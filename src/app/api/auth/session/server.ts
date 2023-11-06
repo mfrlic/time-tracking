@@ -7,13 +7,13 @@ import type { Session } from "../../types";
 initApp();
 
 export async function getServerSession(): Promise<Session | null> {
-  const session = cookies().get(SESSION_COOKIE_NAME)?.value || "";
+  const sessionCookie = cookies().get(SESSION_COOKIE_NAME)?.value || "";
 
-  if (!session) {
+  if (!sessionCookie) {
     return null;
   }
 
-  const decodedClaims = await auth().verifySessionCookie(session, true);
+  const decodedClaims = await auth().verifySessionCookie(sessionCookie, true);
 
   if (!decodedClaims) {
     return null;
