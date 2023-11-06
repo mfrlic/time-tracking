@@ -1,5 +1,5 @@
 import type { Tracker, CreateTrackerProps } from "@/app/api/types";
-import { Toast } from "primereact/toast";
+import type { Toast } from "primereact/toast";
 
 type EditTrackerProps = {
   editingTracker: Tracker | CreateTrackerProps | null;

@@ -1,4 +1,4 @@
-import { IconProps } from "../types";
+import type { IconProps } from "../types";
 
 export default function CalendarIcon({
   color = "#5F6B8A",

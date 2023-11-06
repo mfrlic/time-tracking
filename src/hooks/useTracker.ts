@@ -42,13 +42,11 @@ export default function useTracker(idTracker: string) {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      let data: Tracker;
-
       const docData = snapshot?.data();
 
-      if (docData === undefined) return;
+      if (!docData) return;
 
-      data = {
+      const data: Tracker = {
         idTracker,
         uid: docData.uid,
         description: docData.description,
@@ -56,13 +54,15 @@ export default function useTracker(idTracker: string) {
         createdAt: docData.createdAt.toDate()?.toISOString(),
         stoppedAt: docData.stoppedAt?.toDate()?.toISOString(),
         lastPlayedAt: docData.lastPlayedAt?.toDate()?.toISOString(),
-        lastRefreshedAt: tracker?.lastRefreshedAt,
         shareCode: docData.shareCode,
       };
 
       const updatedData = updateTimeLogged(data);
 
-      setTracker(updatedData);
+      setTracker((prev) => ({
+        ...updatedData,
+        lastRefreshedAt: prev?.lastRefreshedAt,
+      }));
 
       setLoading(false);
     });

@@ -1,4 +1,4 @@
-import { Tracker } from "@/app/api/types";
+import type { Tracker } from "@/app/api/types";
 import { useEffect } from "react";
 
 export default function useTimeSync({

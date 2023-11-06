@@ -17,7 +17,6 @@ import { normalizedSearch } from "@/utils/functions";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { deleteTracker } from "@/app/api/client";
 import { Toast } from "primereact/toast";
-import { useRouter } from "next/router";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);

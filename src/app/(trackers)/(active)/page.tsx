@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import TrackersTable from "./TrackersTable";
 import PageTitle from "@/components/PageTitle";
 import styles from "../Trackers.module.scss";

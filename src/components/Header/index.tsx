@@ -3,7 +3,7 @@ import styles from "./Header.module.scss";
 import MenuItem from "./MenuItem";
 import { LOGO_URL, routes } from "@/utils/constants";
 import Menu from "./Menu";
-import { MenuItemProps } from "./types";
+import type { MenuItemProps } from "./types";
 
 const menuItemProps: MenuItemProps[] = [
   {

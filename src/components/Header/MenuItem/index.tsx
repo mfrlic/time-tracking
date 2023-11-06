@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { logout } from "@/app/api/client";
 import { routes } from "@/utils/constants";
-import { MenuItemContainerProps, MenuItemProps } from "../types";
+import type { MenuItemContainerProps, MenuItemProps } from "../types";
 
 const MenuItemContainer = ({
   children,

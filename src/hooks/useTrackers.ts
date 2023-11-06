@@ -65,9 +65,6 @@ export default function useTrackers(type: "history" | "active") {
             createdAt: doc.data().createdAt.toDate()?.toISOString(),
             stoppedAt: doc.data().stoppedAt?.toDate()?.toISOString(),
             lastPlayedAt: doc.data().lastPlayedAt?.toDate()?.toISOString(),
-            lastRefreshedAt: trackers?.find(
-              (tracker) => tracker.idTracker === doc.id
-            )?.lastRefreshedAt,
             shareCode: doc.data().shareCode,
           };
 
@@ -81,7 +78,14 @@ export default function useTrackers(type: "history" | "active") {
 
       const updatedTrackers = updateTimeLogged(sortedData);
 
-      setTrackers(updatedTrackers);
+      setTrackers((prev) =>
+        updatedTrackers.map((tracker) => ({
+          ...tracker,
+          lastRefreshedAt: prev?.find(
+            (prevTracker) => prevTracker.idTracker === tracker.idTracker
+          )?.lastRefreshedAt,
+        }))
+      );
 
       setLoading(false);
     });
