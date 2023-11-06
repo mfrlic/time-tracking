@@ -46,6 +46,7 @@ export default function TrackerFilters({
     <div className={styles.root}>
       <FilterContainer htmlFor={DATE_FROM_ID} label="Date from">
         <Calendar
+          className={styles.calendar}
           inputId={DATE_FROM_ID}
           name="dateFrom"
           value={filters.dateFrom ? new Date(filters.dateFrom) : null}
@@ -58,6 +59,7 @@ export default function TrackerFilters({
 
       <FilterContainer htmlFor={DATE_TO_ID} label="Date to">
         <Calendar
+          className={styles.calendar}
           inputId={DATE_TO_ID}
           name="dateTo"
           value={filters.dateTo ? new Date(filters.dateTo) : null}

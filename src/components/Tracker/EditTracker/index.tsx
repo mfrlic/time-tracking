@@ -7,6 +7,7 @@ import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { createTracker, updateTracker } from "@/app/api/client";
 import type { EditTrackerProps, TrackerFormValues } from "../types";
+import styles from "./EditTracker.module.scss";
 
 export default function EditTracker({
   editingTracker,
@@ -38,6 +39,8 @@ export default function EditTracker({
     <>
       <Toast ref={toast} />
       <Dialog
+        className={styles.root}
+        dismissableMask
         header={
           (editingTracker as Tracker)?.idTracker
             ? "Edit tracker"
@@ -55,7 +58,7 @@ export default function EditTracker({
           validateOnBlur={false}
         >
           {({ isSubmitting }) => (
-            <Form>
+            <Form className={styles.form}>
               <Field
                 as={InputText}
                 name="description"

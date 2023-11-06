@@ -1,0 +1,19 @@
+@import "@/styles/breakpoints";
+
+.root {
+  width: 50%;
+
+  @media (width <= $breakpoint-lg) {
+    width: 60%;
+  }
+
+  @media (width <= $breakpoint-md) {
+    width: 90%;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+}

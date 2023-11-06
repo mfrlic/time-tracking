@@ -24,7 +24,7 @@ export default function TrackersTable() {
     Tracker | TrackerDTO | null
   >(null);
 
-  const { trackers: activeTrackers } = useTrackers("active");
+  const { trackers: activeTrackers, loading } = useTrackers("active");
 
   const handleDelete = (
     event: MouseEvent<HTMLButtonElement>,
@@ -124,6 +124,8 @@ export default function TrackersTable() {
     callback,
   });
 
+  console.log(loading);
+
   return (
     <>
       <Toast ref={toast} />
@@ -140,7 +142,7 @@ export default function TrackersTable() {
         trackersCount={activeTrackers.length}
       />
 
-      <DataTable value={activeTrackers} paginator rows={5}>
+      <DataTable value={activeTrackers} paginator rows={5} loading={loading}>
         <Column
           header="Time logged"
           body={(data) => formatTimeLogged(data.timeLogged)}

@@ -43,5 +43,24 @@
         cursor: pointer;
       }
     }
+
+    .calendar {
+      :global {
+        .p-inputtext {
+          border-top-right-radius: 0px;
+          border-bottom-right-radius: 0px;
+          border-right-width: 0;
+        }
+        .p-datepicker-trigger {
+          background-color: white;
+          border-color: transparent;
+          border-top-left-radius: 0px;
+          border-bottom-left-radius: 0px;
+          border-left-width: 0;
+
+          color: var(--lynch);
+        }
+      }
+    }
   }
 }

@@ -24,7 +24,7 @@ dayjs.extend(isSameOrBefore);
 
 export default function HistoryTable() {
   const toast = useRef<Toast>(null);
-  const { trackers: allTrackers } = useTrackers("history");
+  const { trackers: allTrackers, loading } = useTrackers("history");
 
   const [filters, setFilters] = useState<TrackerFiltersType>({
     dateFrom: null,
@@ -108,7 +108,7 @@ export default function HistoryTable() {
         onDialogHide={handleDialogHide}
       />
       <TrackerFilters filters={filters} onFiltersChange={handleFiltersChange} />
-      <DataTable value={filteredTrackers} paginator rows={5}>
+      <DataTable value={filteredTrackers} paginator rows={5} loading={loading}>
         <Column
           header="Created at"
           body={(data: Tracker) => formatDateTime(data.createdAt)}

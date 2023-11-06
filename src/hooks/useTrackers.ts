@@ -8,7 +8,7 @@ import useSession from "./useSession";
 import dayjs from "dayjs";
 
 export default function useTrackers(type: "history" | "active") {
-  const [trackers, setTrackers] = useState<Tracker[]>([]);
+  const [trackers, setTrackers] = useState<Tracker[]>();
   const [loading, setLoading] = useState<boolean>(true);
 
   const { session } = useSession();
@@ -25,7 +25,6 @@ export default function useTrackers(type: "history" | "active") {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      setLoading(true);
       const updatedData: Tracker[] = [];
 
       snapshot.forEach(
@@ -54,5 +53,5 @@ export default function useTrackers(type: "history" | "active") {
     return () => unsubscribe();
   }, [type, session?.uid]);
 
-  return { trackers, loading };
+  return { trackers: trackers ?? [], loading };
 }
