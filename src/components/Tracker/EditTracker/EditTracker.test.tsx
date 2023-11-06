@@ -57,6 +57,7 @@ describe("EditTracker", () => {
 
     expect(createTracker).toHaveBeenCalledWith({
       description: "New Tracker Description",
+      lastPlayedAt: expect.any(String),
     });
 
     expect(onDialogHide).toHaveBeenCalled();

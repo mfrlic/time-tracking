@@ -1,5 +1,6 @@
 import { initializeApp, getApps, cert } from "firebase-admin/app";
 
+// read from .env file
 const serviceAccount = {
   type: "service_account",
   projectId: process.env.FIREBASE_PROJECT_ID,

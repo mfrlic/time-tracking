@@ -1,12 +1,27 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "./server";
+import { cookies } from "next/headers";
+import { SESSION_COOKIE_NAME } from "@/utils/constants/cookies";
+import { auth } from "firebase-admin";
+import { initApp } from "@/lib/firebase-admin";
+
+initApp();
 
 export async function GET() {
-  const session = await getServerSession();
+  const sessionCookie = cookies().get(SESSION_COOKIE_NAME)?.value || "";
 
-  if (!session) {
+  if (!sessionCookie) {
+    return null;
+  }
+
+  const decodedClaims = await auth().verifySessionCookie(sessionCookie, true);
+
+  if (!decodedClaims) {
+    return null;
+  }
+
+  if (!decodedClaims) {
     return NextResponse.json(null);
   }
 
-  return NextResponse.json(session);
+  return NextResponse.json(decodedClaims);
 }

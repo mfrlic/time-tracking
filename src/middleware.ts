@@ -11,6 +11,7 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
 
+  // if user is logged in and tries to access login or register page, redirect to trackers
   if (pathname === routes.login || pathname === routes.register) {
     if (sessionCookie) {
       return NextResponse.redirect(new URL(routes.trackers, request.url));
@@ -19,6 +20,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // if user is not logged in and tries to access protected pages, redirect to login
   if (!sessionCookie) {
     return NextResponse.redirect(new URL(routes.login, request.url));
   }
@@ -29,6 +31,7 @@ export async function middleware(request: NextRequest) {
     },
   });
 
+  // if user has an invalid session cookie, redirect to login
   if (!session) {
     request.cookies.delete(SESSION_COOKIE_NAME);
     return NextResponse.redirect(new URL(routes.login, request.url), request);

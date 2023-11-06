@@ -20,14 +20,14 @@ const MenuItemContainer = ({
 
   if (href) {
     return (
-      <Link {...sharedProps} href={href}>
+      <Link {...sharedProps} href={href} data-testid="menu-item">
         {children}
       </Link>
     );
   }
 
   return (
-    <span {...sharedProps} onClick={onClick}>
+    <span {...sharedProps} onClick={onClick} data-testid="menu-item">
       {children}
     </span>
   );

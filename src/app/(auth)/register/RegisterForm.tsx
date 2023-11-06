@@ -35,6 +35,8 @@ export default function RegisterForm() {
 
       if (loginResult) {
         push(routes.trackers);
+      } else {
+        setFieldError("password", "Something went wrong. Please try again");
       }
     } catch (error) {
       if (
