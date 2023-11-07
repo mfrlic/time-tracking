@@ -10,7 +10,7 @@ import "@/styles/theme.css";
 const nunito = Nunito_Sans({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
-  themeColor: "white",
+  themeColor: "#181846",
 };
 
 export const metadata: Metadata = {
