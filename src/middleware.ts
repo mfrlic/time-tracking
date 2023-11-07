@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { routes } from "./utils/constants";
-import { SESSION_COOKIE_NAME } from "./utils/constants/cookies";
+import { routes, SESSION_COOKIE_NAME } from "./utils/constants";
 import { getSession } from "./app/api/client";
 
 // middleware used for protecting routes

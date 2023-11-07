@@ -10,12 +10,18 @@ export default function Timer({ idTracker }: { idTracker: string }) {
 
   useTimeSync({
     interval: 1000,
-    onInterval: setTimeLogged,
+    onInterval: () => {
+      document.title = `${tracker?.description} - ${formatTimeLogged(
+        tracker?.timeLogged
+      )} [devōt - Tracking tool]`;
+
+      setTimeLogged();
+    },
     trackers: tracker ? [tracker] : [],
   });
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} data-testid="timer">
       {loading ? <ProgressSpinner /> : formatTimeLogged(tracker?.timeLogged)}
     </div>
   );

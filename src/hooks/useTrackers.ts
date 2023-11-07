@@ -1,17 +1,14 @@
-import type { Tracker } from "@/app/api/types";
+import type { Tracker, TrackerData } from "@/app/api/types";
 import { firestore } from "@/lib/firebase";
 import { FIREBASE_TRACKERS_COLLECTION } from "@/utils/constants";
 import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
-import useSession from "./useSession";
 import dayjs from "dayjs";
 
 export default function useTrackers(type: "history" | "active") {
   const [trackers, setTrackers] = useState<Tracker[]>();
   const [loading, setLoading] = useState<boolean>(true);
-
-  const { session } = useSession();
 
   const updateTimeLogged = (trackers: Tracker[]) => {
     return trackers.map((tracker) => {
@@ -42,13 +39,10 @@ export default function useTrackers(type: "history" | "active") {
   }, []);
 
   useEffect(() => {
-    if (!session?.uid) {
-      return;
-    }
+    // rule on firebase prevents user from seeing other users' trackers
 
     const q = query(
       collection(firestore, FIREBASE_TRACKERS_COLLECTION),
-      where("uid", "==", session.uid),
       where("stoppedAt", type === "history" ? "!=" : "==", null)
     );
 
@@ -57,15 +51,16 @@ export default function useTrackers(type: "history" | "active") {
 
       snapshot.forEach(
         (doc: QueryDocumentSnapshot<DocumentData, DocumentData>) => {
+          const data = doc.data() as TrackerData;
           const tracker: Tracker = {
             idTracker: doc.id,
-            uid: doc.data().uid,
-            description: doc.data().description,
-            timeLogged: doc.data().timeLogged,
-            createdAt: doc.data().createdAt.toDate()?.toISOString(),
-            stoppedAt: doc.data().stoppedAt?.toDate()?.toISOString(),
-            lastPlayedAt: doc.data().lastPlayedAt?.toDate()?.toISOString(),
-            shareCode: doc.data().shareCode,
+            uid: data.uid,
+            description: data.description,
+            timeLogged: data.timeLogged,
+            createdAt: data.createdAt.toDate()?.toISOString(),
+            stoppedAt: data.stoppedAt?.toDate()?.toISOString(),
+            lastPlayedAt: data.lastPlayedAt?.toDate()?.toISOString(),
+            shareCode: data.shareCode,
           };
 
           updatedData.push(tracker);
@@ -89,7 +84,7 @@ export default function useTrackers(type: "history" | "active") {
     });
 
     return () => unsubscribe();
-  }, [type, session?.uid]);
+  }, [type]);
 
   return { trackers: trackers ?? [], loading, setTimeLogged };
 }

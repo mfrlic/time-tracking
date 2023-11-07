@@ -17,6 +17,10 @@ import { normalizedSearch } from "@/utils/functions";
 import { ConfirmPopup, confirmPopup } from "primereact/confirmpopup";
 import { deleteTracker } from "@/app/api/client";
 import { Toast } from "primereact/toast";
+import {
+  TRACKER_DELETED_MESSAGE,
+  TRACKER_DELETE_POPUP_MESSAGE,
+} from "@/utils/constants";
 
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
@@ -81,32 +85,15 @@ export default function HistoryTable({
   ) => {
     confirmPopup({
       target: event.currentTarget,
-      message: "Do you want to delete this record?",
-      icon: "pi pi-info-circle",
-      acceptClassName: "p-button-danger",
+      ...TRACKER_DELETE_POPUP_MESSAGE,
       accept: () =>
         deleteTracker(tracker.idTracker).then(() =>
-          toast.current?.show({
-            severity: "success",
-            summary: "Tracker deleted",
-            life: 2000,
-          })
+          toast.current?.show(TRACKER_DELETED_MESSAGE)
         ),
     });
   };
 
   const handleFiltersChange = (filters: TrackerFiltersType) => {
-    const filtersSearchParams = new URLSearchParams({
-      ...(filters.dateFrom ? { dateFrom: filters.dateFrom } : {}),
-      ...(filters.dateTo ? { dateFrom: filters.dateTo } : {}),
-      searchTerm: filters.searchTerm ?? "",
-    });
-
-    const newUrl = `${
-      window.location.origin
-    }/history?${filtersSearchParams.toString()}`;
-    window.location.replace(newUrl);
-
     setFilters(filters);
   };
 

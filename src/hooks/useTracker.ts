@@ -1,4 +1,4 @@
-import type { Tracker } from "@/app/api/types";
+import type { Tracker, TrackerData } from "@/app/api/types";
 import { firestore } from "@/lib/firebase";
 import { FIREBASE_TRACKERS_COLLECTION } from "@/utils/constants";
 import { collection, doc, onSnapshot } from "firebase/firestore";
@@ -42,7 +42,7 @@ export default function useTracker(idTracker: string) {
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const docData = snapshot?.data();
+      const docData = snapshot?.data() as TrackerData;
 
       if (!docData) return;
 

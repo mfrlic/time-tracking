@@ -1,4 +1,4 @@
-import { SESSION_COOKIE_NAME } from "@/utils/constants/cookies";
+import { SESSION_COOKIE_NAME } from "@/utils/constants";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 

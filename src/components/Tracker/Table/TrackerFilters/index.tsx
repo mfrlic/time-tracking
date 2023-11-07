@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import dayjs from "dayjs";
 import { Calendar } from "primereact/calendar";
 import { InputText } from "primereact/inputtext";
 import styles from "./TrackerFilters.module.scss";
@@ -7,6 +6,7 @@ import type { FormEvent } from "primereact/ts-helpers";
 import FilterContainer from "./TrackerFilterContainer";
 import type { TrackerFilters as TrackerFiltersType } from "../../types";
 import CalendarIcon from "@/assets/icons/CalendarIcon";
+import { formatDate } from "@/utils/formatters";
 
 const DATE_FROM_ID = "cal-from";
 const DATE_TO_ID = "cal-to";
@@ -19,10 +19,6 @@ export default function TrackerFilters({
   filters: TrackerFiltersType;
   onFiltersChange: (filters: TrackerFiltersType) => void;
 }) {
-  const formatDate = (date: Date) => {
-    return dayjs(date).format("DD.MM.YYYY.");
-  };
-
   const handleFiltersChange = (
     event:
       | FormEvent<Date, React.SyntheticEvent<Element, Event>>

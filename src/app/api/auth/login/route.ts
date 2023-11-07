@@ -2,10 +2,7 @@ import { auth } from "firebase-admin";
 import { initApp } from "@/lib/firebase-admin";
 import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
-import {
-  SESSION_COOKIE_NAME,
-  SESSION_EXPIRES_IN,
-} from "@/utils/constants/cookies";
+import { SESSION_COOKIE_NAME, SESSION_EXPIRES_IN } from "@/utils/constants";
 
 initApp();
 

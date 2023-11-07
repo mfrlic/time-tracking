@@ -10,6 +10,7 @@ import styles from "./TrackerActions.module.scss";
 import type { TrackerActionsProps } from "../../types";
 import { Button } from "primereact/button";
 import { updateTracker } from "@/app/api/client";
+import { SHARE_LINK_COPIED_MESSAGE } from "@/utils/constants";
 
 function generateSecretCode(length: number) {
   const characters =
@@ -53,11 +54,7 @@ export default function Actions({
       `${window.location.origin}/tracker/${shareCode}`
     );
 
-    toast?.show({
-      severity: "info",
-      summary: "Share link copied to clipboard",
-      life: 2000,
-    });
+    toast?.show(SHARE_LINK_COPIED_MESSAGE);
   };
 
   return (
@@ -107,7 +104,6 @@ export default function Actions({
         text
         aria-label="Edit"
       />
-
       <Button
         icon={<TrashIcon className={styles.icon} />}
         onClick={(event) => onDelete(event, tracker)}

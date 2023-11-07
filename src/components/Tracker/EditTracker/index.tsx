@@ -11,6 +11,10 @@ import styles from "./EditTracker.module.scss";
 import { object, string } from "yup";
 import ErrorText from "@/components/ErrorText";
 import dayjs from "dayjs";
+import {
+  TRACKER_CREATED_MESSAGE,
+  TRACKER_UPDATED_MESSAGE,
+} from "@/utils/constants";
 
 export default function EditTracker({
   editingTracker,
@@ -32,11 +36,9 @@ export default function EditTracker({
       });
     }
 
-    toast.current?.show({
-      severity: "success",
-      summary: `Tracker ${idTracker ? "updated" : "created"}`,
-      life: 2000,
-    });
+    toast.current?.show(
+      idTracker ? TRACKER_UPDATED_MESSAGE : TRACKER_CREATED_MESSAGE
+    );
 
     onDialogHide();
   };

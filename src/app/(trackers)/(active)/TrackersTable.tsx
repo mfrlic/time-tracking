@@ -13,6 +13,10 @@ import EditTracker from "@/components/Tracker/EditTracker";
 import TrackerToolbar from "@/components/Tracker/Table/TrackerToolbar";
 import dayjs from "dayjs";
 import { useTimeSync, useTrackers } from "@/hooks";
+import {
+  TRACKER_DELETED_MESSAGE,
+  TRACKER_DELETE_POPUP_MESSAGE,
+} from "@/utils/constants";
 
 export default function TrackersTable() {
   const toast = useRef<Toast>(null);
@@ -39,16 +43,10 @@ export default function TrackersTable() {
   ) => {
     confirmPopup({
       target: event.currentTarget,
-      message: "Do you want to delete this record?",
-      icon: "pi pi-info-circle",
-      acceptClassName: "p-button-danger",
+      ...TRACKER_DELETE_POPUP_MESSAGE,
       accept: () =>
         deleteTracker(tracker.idTracker).then(() =>
-          toast.current?.show({
-            severity: "success",
-            summary: "Tracker deleted",
-            life: 2000,
-          })
+          toast.current?.show(TRACKER_DELETED_MESSAGE)
         ),
     });
   };

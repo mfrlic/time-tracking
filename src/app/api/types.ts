@@ -1,4 +1,5 @@
 import type { DecodedIdToken } from "firebase-admin/auth";
+import type { Timestamp } from "firebase/firestore";
 
 type LoginProps = {
   idToken: string;
@@ -16,6 +17,15 @@ type Tracker = {
   shareCode?: string;
 };
 
+type TrackerData = Omit<
+  Tracker,
+  "idTracker" | "lastRefreshedAt" | "createdAt" | "stoppedAt" | "lastPlayedAt"
+> & {
+  createdAt: Timestamp;
+  stoppedAt?: Timestamp | null;
+  lastPlayedAt?: Timestamp | null;
+};
+
 type UpdateTrackerProps = {
   description?: string;
   idTracker: string;
@@ -31,6 +41,7 @@ type Session = DecodedIdToken;
 
 export type {
   Tracker,
+  TrackerData,
   UpdateTrackerProps,
   CreateTrackerProps,
   Session,

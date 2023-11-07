@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { SESSION_COOKIE_NAME } from "@/utils/constants/cookies";
+import { SESSION_COOKIE_NAME } from "@/utils/constants";
 import { auth } from "firebase-admin";
 import { initApp } from "@/lib/firebase-admin";
 
