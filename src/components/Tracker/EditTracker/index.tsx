@@ -10,7 +10,6 @@ import type { EditTrackerProps, TrackerFormValues } from "../types";
 import styles from "./EditTracker.module.scss";
 import { object, string } from "yup";
 import ErrorText from "@/components/ErrorText";
-import dayjs from "dayjs";
 import {
   TRACKER_CREATED_MESSAGE,
   TRACKER_UPDATED_MESSAGE,
@@ -32,7 +31,7 @@ export default function EditTracker({
 
       await createTracker({
         description,
-        lastPlayedAt: dayjs().toISOString(),
+        lastPlayedAt: Date.now(),
       });
     }
 

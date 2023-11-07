@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
 import Header from "@/components/Header";
 import { PrimeReactProvider } from "primereact/api";
@@ -9,9 +9,32 @@ import "@/styles/theme.css";
 
 const nunito = Nunito_Sans({ subsets: ["latin"] });
 
+export const viewport: Viewport = {
+  themeColor: "white",
+};
+
 export const metadata: Metadata = {
   title: "devōt - Tracking tool",
   description: "Work hours tracking tool",
+  icons: {
+    apple: {
+      sizes: "180x180",
+      url: "/apple-touch-icon.png",
+    },
+    icon: [
+      {
+        sizes: "16x16",
+        type: "image/png",
+        url: "/favicon-16x16.png",
+      },
+      {
+        sizes: "32x32",
+        type: "image/png",
+        url: "/favicon-32x32.png",
+      },
+    ],
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

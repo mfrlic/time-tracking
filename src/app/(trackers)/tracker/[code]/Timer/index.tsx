@@ -9,7 +9,6 @@ export default function Timer({ idTracker }: { idTracker: string }) {
   const { tracker, loading, setTimeLogged } = useTracker(idTracker);
 
   useTimeSync({
-    interval: 1000,
     onInterval: setTimeLogged,
     trackers: tracker ? [tracker] : [],
   });

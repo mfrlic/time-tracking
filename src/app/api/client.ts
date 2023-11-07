@@ -46,7 +46,7 @@ async function createTracker({
   lastPlayedAt,
 }: {
   description: string;
-  lastPlayedAt: string;
+  lastPlayedAt: number;
 }) {
   addDoc(collection(firestore, FIREBASE_TRACKERS_COLLECTION), {
     createdAt: new Timestamp(new Date().getTime() / 1000, 0),
@@ -81,10 +81,8 @@ async function updateTracker({
   }
 
   if (stoppedAt) {
-    toUpdate["stoppedAt"] = new Timestamp(
-      new Date(stoppedAt).getTime() / 1000,
-      0
-    );
+    const nanoseconds = (stoppedAt % 1000) * 1000;
+    toUpdate["stoppedAt"] = new Timestamp(stoppedAt / 1000, nanoseconds);
   }
 
   if (timeLogged) {
@@ -92,9 +90,16 @@ async function updateTracker({
   }
 
   if (lastPlayedAt !== undefined) {
-    toUpdate["lastPlayedAt"] = lastPlayedAt
-      ? new Timestamp(new Date(lastPlayedAt).getTime() / 1000, 0)
-      : null;
+    if (lastPlayedAt === null) {
+      toUpdate["lastPlayedAt"] = null;
+    } else {
+      const nanoseconds = (lastPlayedAt % 1000) * 1000;
+
+      toUpdate["lastPlayedAt"] = new Timestamp(
+        lastPlayedAt / 1000,
+        nanoseconds
+      );
+    }
   }
 
   if (shareCode) {

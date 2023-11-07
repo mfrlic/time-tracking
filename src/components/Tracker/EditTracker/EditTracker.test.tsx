@@ -1,6 +1,5 @@
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import EditTracker from ".";
-import dayjs from "dayjs";
 import { createTracker, updateTracker } from "@/app/api/client";
 
 jest.mock("@/app/api/client", () => ({
@@ -12,7 +11,7 @@ describe("EditTracker", () => {
   it("should render the dialog", () => {
     const editingTracker = {
       description: "",
-      createdAt: dayjs().toISOString(),
+      createdAt: Date.now(),
     };
     const onDialogHide = jest.fn();
     render(
@@ -31,7 +30,7 @@ describe("EditTracker", () => {
   it("should submit the new tracker", async () => {
     const editingTracker = {
       description: "",
-      createdAt: dayjs().toISOString(),
+      createdAt: Date.now(),
     };
     const onDialogHide = jest.fn();
 
@@ -68,7 +67,7 @@ describe("EditTracker", () => {
       idTracker: 1,
       description: "Old Description",
       uid: "abc",
-      createdAt: dayjs().toISOString(),
+      createdAt: Date.now(),
       timeLogged: 0,
     };
 

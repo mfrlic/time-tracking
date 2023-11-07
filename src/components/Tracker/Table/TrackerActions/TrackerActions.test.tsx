@@ -1,15 +1,14 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import Actions from ".";
-import dayjs from "dayjs";
 
 describe("Actions", () => {
   const mockData = {
     idTracker: "1",
     uid: "abc",
     description: "Tracker Description",
-    createdAt: dayjs().toISOString(),
+    createdAt: Date.now(),
     timeLogged: 0,
-    lastPlayedAt: dayjs().toISOString(),
+    lastPlayedAt: Date.now(),
   };
 
   it("should render the Actions component with Play", () => {

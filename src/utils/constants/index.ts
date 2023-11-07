@@ -10,6 +10,9 @@ import {
 } from "./messages";
 import { SESSION_COOKIE_NAME, SESSION_EXPIRES_IN } from "./cookies";
 
+const SYNC_INTERVAL = 1000; // how often to sync time on client (ms)
+const SYNC_INTERVAL_OFFSET = 30; // allowed offset for syncing time on client (ms)
+
 export {
   routes,
   apiRoutes,
@@ -22,4 +25,6 @@ export {
   SESSION_COOKIE_NAME,
   SESSION_EXPIRES_IN,
   TRACKER_DELETE_POPUP_MESSAGE,
+  SYNC_INTERVAL,
+  SYNC_INTERVAL_OFFSET,
 };

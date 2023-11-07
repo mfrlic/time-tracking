@@ -25,17 +25,18 @@ import {
 dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
-export default function HistoryTable({
-  initialFilters,
-}: {
-  initialFilters: TrackerFiltersType;
-}) {
+export default function HistoryTable() {
   const toast = useRef<Toast>(null);
   const { trackers: allTrackers, loading } = useTrackers("history");
 
-  const [filters, setFilters] = useState<TrackerFiltersType>(initialFilters);
+  const [filters, setFilters] = useState<TrackerFiltersType>({
+    searchTerm: "",
+    dateFrom: null,
+    dateTo: null,
+  });
 
   const [filteredTrackers, setFilteredTrackers] = useState<Tracker[]>();
+  const [editingTracker, setEditingTracker] = useState<Tracker | null>(null);
 
   const filterResults = useCallback(
     (filters: TrackerFiltersType) => {
@@ -62,14 +63,13 @@ export default function HistoryTable({
 
       setFilteredTrackers(filteredTrackers);
     },
-    [allTrackers, setFilteredTrackers]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [JSON.stringify(allTrackers)]
   );
 
   useEffect(() => {
     filterResults(filters);
-  }, [allTrackers, filters, filterResults]);
-
-  const [editingTracker, setEditingTracker] = useState<Tracker | null>(null);
+  }, [filters, filterResults]);
 
   const handleDialogHide = () => {
     setEditingTracker(null);
@@ -93,8 +93,9 @@ export default function HistoryTable({
     });
   };
 
-  const handleFiltersChange = (filters: TrackerFiltersType) => {
-    setFilters(filters);
+  const handleFiltersChange = (f: TrackerFiltersType) => {
+    setFilters(f);
+    filterResults(f);
   };
 
   return (

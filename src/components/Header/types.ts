@@ -5,11 +5,13 @@ type MenuItemProps = {
   isFirst?: boolean;
   isLast?: boolean;
   isLogout?: true;
+  ariaLabel?: string;
 };
 
-type MenuItemContainerProps = React.PropsWithChildren<{
-  href?: string;
-  onClick?: () => void;
-}>;
+type MenuItemContainerProps = React.PropsWithChildren<
+  Pick<MenuItemProps, "href" | "ariaLabel"> & {
+    onClick?: () => void;
+  }
+>;
 
 export type { MenuItemProps, MenuItemContainerProps };

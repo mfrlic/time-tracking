@@ -11,7 +11,6 @@ import { formatTimeLogged } from "@/utils/formatters";
 import TrackerActions from "../../../components/Tracker/Table/TrackerActions";
 import EditTracker from "@/components/Tracker/EditTracker";
 import TrackerToolbar from "@/components/Tracker/Table/TrackerToolbar";
-import dayjs from "dayjs";
 import { useTimeSync, useTrackers } from "@/hooks";
 import {
   TRACKER_DELETED_MESSAGE,
@@ -32,7 +31,6 @@ export default function TrackersTable() {
   } = useTrackers("active");
 
   useTimeSync({
-    interval: 1000,
     onInterval: setTimeLogged,
     trackers: activeTrackers,
   });
@@ -53,7 +51,7 @@ export default function TrackersTable() {
 
   const handleAdd = () => {
     setEditingTracker({
-      createdAt: dayjs().toISOString(),
+      createdAt: Date.now(),
       description: "",
     });
   };
@@ -71,7 +69,7 @@ export default function TrackersTable() {
 
     await updateTracker({
       idTracker: tracker?.idTracker,
-      lastPlayedAt: dayjs().toISOString(),
+      lastPlayedAt: Date.now(),
     });
   };
 
@@ -99,7 +97,7 @@ export default function TrackersTable() {
 
     await updateTracker({
       idTracker: tracker?.idTracker,
-      stoppedAt: dayjs().toISOString(),
+      stoppedAt: Date.now(),
       ...additionalData,
     });
   };

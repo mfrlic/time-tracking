@@ -9,10 +9,10 @@ type Tracker = {
   idTracker: string;
   uid: string;
   description: string;
-  createdAt: string;
-  stoppedAt?: string | null;
-  lastPlayedAt?: string | null;
-  lastRefreshedAt?: string; // only used in client
+  createdAt: number;
+  stoppedAt?: number | null;
+  lastPlayedAt?: number | null;
+  lastRefreshedAt?: number; // only used in client
   timeLogged: number;
   shareCode?: string;
 };
@@ -29,9 +29,9 @@ type TrackerData = Omit<
 type UpdateTrackerProps = {
   description?: string;
   idTracker: string;
-  stoppedAt?: string;
+  stoppedAt?: number;
   timeLogged?: number;
-  lastPlayedAt?: string | null;
+  lastPlayedAt?: number | null;
   shareCode?: string;
 };
 

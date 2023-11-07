@@ -1,10 +1,13 @@
 import type { Tracker, TrackerData } from "@/app/api/types";
 import { firestore } from "@/lib/firebase";
-import { FIREBASE_TRACKERS_COLLECTION } from "@/utils/constants";
+import {
+  FIREBASE_TRACKERS_COLLECTION,
+  // SYNC_INTERVAL,
+  // SYNC_INTERVAL_OFFSET,
+} from "@/utils/constants";
 import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
-import dayjs from "dayjs";
 import { useSession } from ".";
 
 export default function useTrackers(type: "history" | "active") {
@@ -15,17 +18,21 @@ export default function useTrackers(type: "history" | "active") {
 
   const updateTimeLogged = (trackers: Tracker[]) => {
     return trackers.map((tracker) => {
-      const dateNow = dayjs();
+      const dateNow = Date.now();
 
       if (tracker.lastPlayedAt) {
-        const lastUpdateDate = dayjs(
-          tracker.lastRefreshedAt ?? tracker.lastPlayedAt
-        );
+        if (tracker?.lastRefreshedAt) {
+          const toBeAdded = dateNow - tracker.lastRefreshedAt;
 
-        tracker.timeLogged += dateNow.diff(lastUpdateDate, "milliseconds");
+          tracker.timeLogged += toBeAdded;
+        } else {
+          const toBeAdded = dateNow - tracker.lastPlayedAt;
+
+          tracker.timeLogged += toBeAdded;
+        }
       }
 
-      tracker.lastRefreshedAt = dateNow.toISOString();
+      tracker.lastRefreshedAt = dateNow;
 
       return tracker;
     });
@@ -62,9 +69,9 @@ export default function useTrackers(type: "history" | "active") {
             uid: data.uid,
             description: data.description,
             timeLogged: data.timeLogged,
-            createdAt: data.createdAt.toDate()?.toISOString(),
-            stoppedAt: data.stoppedAt?.toDate()?.toISOString(),
-            lastPlayedAt: data.lastPlayedAt?.toDate()?.toISOString(),
+            createdAt: data.createdAt.toDate().getTime(),
+            stoppedAt: data.stoppedAt?.toDate()?.getTime(),
+            lastPlayedAt: data.lastPlayedAt?.toDate()?.getTime(),
             shareCode: data.shareCode,
           };
 
@@ -73,7 +80,7 @@ export default function useTrackers(type: "history" | "active") {
       );
 
       const sortedData = updatedData.sort((a, b) =>
-        dayjs(b.createdAt).isAfter(a.createdAt) ? 1 : -1
+        b.createdAt > a.createdAt ? 1 : -1
       );
 
       const updatedTrackers = updateTimeLogged(sortedData);
@@ -81,7 +88,7 @@ export default function useTrackers(type: "history" | "active") {
       setTrackers(
         updatedTrackers.map((tracker) => ({
           ...tracker,
-          lastRefreshedAt: dayjs().toISOString(),
+          lastRefreshedAt: Date.now(),
         }))
       );
 

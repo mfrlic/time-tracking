@@ -1,12 +1,11 @@
 import type { Tracker } from "@/app/api/types";
+import { SYNC_INTERVAL } from "@/utils/constants";
 import { useEffect } from "react";
 
 export default function useTimeSync({
-  interval,
   onInterval,
   trackers,
 }: {
-  interval: number;
   onInterval: () => void;
   trackers: Tracker[];
 }) {
@@ -14,9 +13,9 @@ export default function useTimeSync({
     let intervalId: NodeJS.Timeout;
 
     if (trackers?.find((tracker) => tracker.lastPlayedAt)) {
-      intervalId = setInterval(() => onInterval(), interval);
+      intervalId = setInterval(() => onInterval(), SYNC_INTERVAL);
     }
 
     return () => (intervalId ? clearInterval(intervalId) : undefined);
-  }, [onInterval, interval, trackers]);
+  }, [onInterval, trackers]);
 }

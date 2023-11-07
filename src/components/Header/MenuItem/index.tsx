@@ -13,6 +13,7 @@ const MenuItemContainer = ({
   children,
   href,
   onClick,
+  ariaLabel,
 }: MenuItemContainerProps) => {
   const sharedProps = {
     className: styles.root,
@@ -20,7 +21,12 @@ const MenuItemContainer = ({
 
   if (href) {
     return (
-      <Link {...sharedProps} href={href} data-testid="menu-item">
+      <Link
+        {...sharedProps}
+        href={href}
+        aria-label={ariaLabel}
+        data-testid="menu-item"
+      >
         {children}
       </Link>
     );

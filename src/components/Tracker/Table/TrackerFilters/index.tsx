@@ -51,6 +51,7 @@ export default function TrackerFilters({
           formatDateTime={formatDate}
           showIcon
           icon={<CalendarIcon />}
+          showButtonBar
         />
       </FilterContainer>
 
@@ -62,9 +63,11 @@ export default function TrackerFilters({
           value={filters.dateTo ? new Date(filters.dateTo) : null}
           onChange={handleFiltersChange}
           minDate={filters.dateFrom ? new Date(filters.dateFrom) : undefined}
+          maxDate={new Date()}
           formatDateTime={formatDate}
           showIcon
           icon={<CalendarIcon />}
+          showButtonBar
         />
       </FilterContainer>
 

@@ -11,12 +11,14 @@ const menuItemProps: MenuItemProps[] = [
     icon: "pi-clock",
     title: "Trackers",
     isFirst: true,
+    ariaLabel: "Go to Trackers page",
   },
   {
     href: routes.history,
     icon: "pi-history",
     title: "History",
     isLast: true,
+    ariaLabel: "Go to History page",
   },
   {
     icon: "pi-power-off",

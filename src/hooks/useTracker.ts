@@ -3,22 +3,19 @@ import { firestore } from "@/lib/firebase";
 import { FIREBASE_TRACKERS_COLLECTION } from "@/utils/constants";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
-import dayjs from "dayjs";
 
 export default function useTracker(idTracker: string) {
   const [tracker, setTracker] = useState<Tracker>();
   const [loading, setLoading] = useState<boolean>(true);
 
   const updateTimeLogged = (t: Tracker) => {
-    const dateNow = dayjs();
+    const dateNow = Date.now();
 
     if (t.lastPlayedAt) {
-      const lastUpdateDate = dayjs(t.lastRefreshedAt ?? t.lastPlayedAt);
-
-      t.timeLogged += dateNow.diff(lastUpdateDate, "milliseconds");
+      t.timeLogged += dateNow - (t.lastRefreshedAt ?? t.lastPlayedAt);
     }
 
-    t.lastRefreshedAt = dateNow.toISOString();
+    t.lastRefreshedAt = dateNow;
 
     return t;
   };
@@ -51,15 +48,15 @@ export default function useTracker(idTracker: string) {
         uid: docData.uid,
         description: docData.description,
         timeLogged: docData.timeLogged,
-        createdAt: docData.createdAt.toDate()?.toISOString(),
-        stoppedAt: docData.stoppedAt?.toDate()?.toISOString(),
-        lastPlayedAt: docData.lastPlayedAt?.toDate()?.toISOString(),
+        createdAt: docData.createdAt.toDate()?.getTime(),
+        stoppedAt: docData.stoppedAt?.toDate()?.getTime(),
+        lastPlayedAt: docData.lastPlayedAt?.toDate()?.getTime(),
         shareCode: docData.shareCode,
       };
 
       const updatedData = updateTimeLogged(data);
 
-      setTracker({ ...updatedData, lastRefreshedAt: dayjs().toISOString() });
+      setTracker({ ...updatedData, lastRefreshedAt: Date.now() });
 
       setLoading(false);
     });
