@@ -5,10 +5,13 @@ import type { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { useSession } from ".";
 
 export default function useTrackers(type: "history" | "active") {
   const [trackers, setTrackers] = useState<Tracker[]>();
   const [loading, setLoading] = useState<boolean>(true);
+
+  const { session } = useSession();
 
   const updateTimeLogged = (trackers: Tracker[]) => {
     return trackers.map((tracker) => {
@@ -39,10 +42,12 @@ export default function useTrackers(type: "history" | "active") {
   }, []);
 
   useEffect(() => {
-    // rule on firebase prevents user from seeing other users' trackers
+    if (!session?.uid) return;
 
+    // rule on firebase prevents user from seeing other users' trackers (by uid)
     const q = query(
       collection(firestore, FIREBASE_TRACKERS_COLLECTION),
+      where("uid", "==", session?.uid),
       where("stoppedAt", type === "history" ? "!=" : "==", null)
     );
 
@@ -84,7 +89,7 @@ export default function useTrackers(type: "history" | "active") {
     });
 
     return () => unsubscribe();
-  }, [type]);
+  }, [type, session?.uid]);
 
   return { trackers: trackers ?? [], loading, setTimeLogged };
 }

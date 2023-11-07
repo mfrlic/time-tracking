@@ -10,13 +10,7 @@ export default function Timer({ idTracker }: { idTracker: string }) {
 
   useTimeSync({
     interval: 1000,
-    onInterval: () => {
-      document.title = `${tracker?.description} - ${formatTimeLogged(
-        tracker?.timeLogged
-      )} [devōt - Tracking tool]`;
-
-      setTimeLogged();
-    },
+    onInterval: setTimeLogged,
     trackers: tracker ? [tracker] : [],
   });
 

@@ -22,6 +22,7 @@ export const generateMetadata = async ({ params }: TrackerPageProps) => {
 
   return {
     title: `${trackerData?.description} [devōt - Tracking tool]`,
+    description: `Track "${trackerData?.description}" using Tracking tool}`,
   };
 };
 
