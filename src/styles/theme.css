@@ -3505,6 +3505,9 @@ a {
 .p-datatable .p-datatable-scrollable-footer {
   background: #efefef;
 }
+.p-datatable-wrapper {
+  min-height: 465px;
+}
 .p-datatable.p-datatable-scrollable
   > .p-datatable-wrapper
   > .p-datatable-table
