@@ -78,12 +78,10 @@ export default function useTrackers(type: "history" | "active") {
 
       const updatedTrackers = updateTimeLogged(sortedData);
 
-      setTrackers((prev) =>
+      setTrackers(
         updatedTrackers.map((tracker) => ({
           ...tracker,
-          lastRefreshedAt: prev?.find(
-            (prevTracker) => prevTracker.idTracker === tracker.idTracker
-          )?.lastRefreshedAt,
+          lastRefreshedAt: dayjs().toISOString(),
         }))
       );
 

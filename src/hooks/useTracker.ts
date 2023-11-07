@@ -29,7 +29,7 @@ export default function useTracker(idTracker: string) {
         return prevTracker;
       }
 
-      return updateTimeLogged(prevTracker);
+      return { ...updateTimeLogged(prevTracker) };
     });
   }, []);
 
@@ -59,10 +59,7 @@ export default function useTracker(idTracker: string) {
 
       const updatedData = updateTimeLogged(data);
 
-      setTracker((prev) => ({
-        ...updatedData,
-        lastRefreshedAt: prev?.lastRefreshedAt,
-      }));
+      setTracker({ ...updatedData, lastRefreshedAt: dayjs().toISOString() });
 
       setLoading(false);
     });

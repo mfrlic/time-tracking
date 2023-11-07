@@ -10,13 +10,17 @@ export async function GET() {
   const sessionCookie = cookies().get(SESSION_COOKIE_NAME)?.value || "";
 
   if (!sessionCookie) {
-    return null;
+    return NextResponse.json("No session cookie provided", {
+      status: 500,
+    });
   }
 
   const decodedClaims = await auth().verifySessionCookie(sessionCookie, true);
 
   if (!decodedClaims) {
-    return null;
+    return NextResponse.json("Invalid session cookie", {
+      status: 500,
+    });
   }
 
   if (!decodedClaims) {
