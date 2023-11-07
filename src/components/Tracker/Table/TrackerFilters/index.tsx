@@ -47,7 +47,7 @@ export default function TrackerFilters({
           name="dateFrom"
           value={filters.dateFrom ? new Date(filters.dateFrom) : null}
           onChange={handleFiltersChange}
-          maxDate={filters.dateTo ? new Date(filters.dateTo) : undefined}
+          maxDate={filters.dateTo ? new Date(filters.dateTo) : new Date()}
           formatDateTime={formatDate}
           showIcon
           icon={<CalendarIcon />}
