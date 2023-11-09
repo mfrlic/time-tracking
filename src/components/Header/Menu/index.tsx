@@ -9,7 +9,11 @@ export default function Menu({ children }: React.PropsWithChildren) {
   const pathname = usePathname();
 
   const shouldRender = useMemo(() => {
-    return pathname !== routes.login && pathname !== routes.register;
+    return (
+      pathname !== routes.login &&
+      pathname !== routes.register &&
+      !pathname?.includes("/tracker/")
+    );
   }, [pathname]);
 
   if (!shouldRender) return null;
